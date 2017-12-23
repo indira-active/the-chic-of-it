@@ -177,6 +177,10 @@ final class Indira_Active {
 			'indira-scripts', $assets . 'js/foot.min.js',
 			array( 'jquery' ), false, true
 		);
+
+
+		// kill Refined theme stuff
+		wp_dequeue_style( 'google-font' );
 	}
 }
 
