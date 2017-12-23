@@ -97,6 +97,7 @@ final class Indira_Active {
 
 		// load every time
 		$includes = array(
+			'class-header',
 			'functions',
 		);
 
@@ -201,3 +202,6 @@ function IA() {
 
 // SPINSIES
 IA();
+
+
+remove_filter( 'wp_nav_menu_items', 'refined_primary_nav_extras', 10 );
