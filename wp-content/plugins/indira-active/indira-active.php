@@ -173,6 +173,10 @@ final class Indira_Active {
 		$assets    = IA_PLUGIN_URL . 'assets/';
 		$post_type = indira_get_current_post_type();
 
+		// Google Fonts
+		wp_enqueue_style( 'indira-google-fonts', 'https://fonts.googleapis.com/css?family=Open+Sans:300,300i', array(), '' );
+
+		// scripts
 		wp_enqueue_script(
 			'indira-scripts', $assets . 'js/foot.min.js',
 			array( 'jquery' ), false, true
