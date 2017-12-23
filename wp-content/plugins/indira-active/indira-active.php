@@ -60,7 +60,7 @@ final class Indira_Active {
 			self::$instance->includes();
 			// self::$instance->objects();
 
-			add_action( 'wp_enqueue_scripts', array( self::$instance, 'enqueue_scripts'         )         );
+			add_action( 'wp_enqueue_scripts', array( self::$instance, 'enqueue_scripts'         ), 20     );
 			add_filter( 'single_template'   , array( self::$instance, 'maybe_override_template' ), 100, 1 );
 
 			register_activation_hook(   IA_PLUGIN_FILE, array( self::$instance, 'plugin_activate'   ) );
@@ -177,7 +177,6 @@ final class Indira_Active {
 			'indira-scripts', $assets . 'js/foot.min.js',
 			array( 'jquery' ), false, true
 		);
-
 
 		// kill Refined theme stuff
 		wp_dequeue_style( 'google-font' );
