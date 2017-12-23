@@ -8,17 +8,6 @@
 
 
 /**
- * The main function that returns Indira_Active
- *
- * @return object
- * @since 1.0.0
- */
-function IA() {
-	return Indira_Active::instance();
-}
-
-
-/**
  * Get the current post type
  *
  * @return  string  post type or queried post arg fallback

@@ -113,9 +113,7 @@ final class Indira_Active {
 	 * @since 1.0.0
 	 */
 	public function objects() {
-
 		// $this->eh        = new IA_Eh;
-
 		do_action( 'indira_loaded' );
 	}
 
@@ -180,6 +178,17 @@ final class Indira_Active {
 			array( 'jquery' ), false, true
 		);
 	}
+}
+
+
+/**
+ * The main function that returns Indira_Active
+ *
+ * @return object
+ * @since 1.0.0
+ */
+function IA() {
+	return Indira_Active::instance();
 }
 
 // SPINSIES
