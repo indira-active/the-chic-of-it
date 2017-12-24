@@ -8,7 +8,7 @@
 /**
  * SET BROSWERSYNC URL
  */
-var bs_url = "http://indira-active.test/";
+var bs_url = "http://indira-active.jpdev/";
 
 /**
  * Grab gulp packages
