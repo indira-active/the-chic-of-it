@@ -29,6 +29,18 @@
  * @since 1.0.0
  */
 /**
+ * Global
+ */
+body {
+  font-family: "Open Sans", sans-serif; }
+
+/**
+ * Headings
+ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Open Sans", sans-serif; }
+
+/**
  * Main styles (basically misc)
  *
  * @package indira
