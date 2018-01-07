@@ -6,27 +6,45 @@
  */
 
 .site-header {
-	min-height: 0px;
+	min-height: 100px;
+	@include flex-row( true );
 
 	.wrap {
-		padding: 0 15px;
+		padding: 0 15px 0 5px;
 		max-width: none;
+		width: 100%;
 	}
 
 	.widget-area {
 		padding: 0;
+		width: 300px;
 	}
 
 	.search-form {
-		width: 60%;
-	// 	float: none;
+		width: 100%;
+		margin-top: 9px;
 	}
 
-	@media only screen and (max-width: 1200px) {
 
-		// .widget-area {
-		// 	width: 250px;
-		// }
+	@media only screen and (max-width: 1200px) {
+		padding-left: 10px;
+	}
+
+	@media only screen and (max-width: 960px) {
+		min-height: 0px;
+
+		.wrap {
+			display: block;
+		}
+
+		.widget-area {
+			width: 100%;
+		}
+
+		.search-form {
+			margin-top: 0;
+			width: 60%;
+		}
 	}
 }
 
@@ -34,4 +52,26 @@
 	font-size: 22px;
 	letter-spacing: 20px;
 	font-weight: 400;
+}
+
+
+// mobile menu toggle
+.menu-toggle {
+
+	@media only screen and (max-width: 1024px) {
+		background: $gray-dark;
+		color: $white;
+		font-size: 15px;
+		
+		// icon
+		&:before {
+			position: relative;
+			top: -1px;
+			font-size: 24px;
+		}
+
+		&:hover, &:focus {
+			background: $gray-dark;
+		}
+	}
 }

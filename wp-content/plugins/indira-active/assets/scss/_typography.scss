@@ -12,12 +12,14 @@ body {
 	font-family: $font-body;
 }
 
+
 /**
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
 	font-family: $font-heading;
 }
+
 
 /**
  * Misc. font family fixes
@@ -36,6 +38,7 @@ a.more-link,
 .content article .custom-date,
 .single-post .content article .custom-date,
 .widget-title,
+button, input[type="button"], input[type="reset"], input[type="submit"], .button
 #sb_instagram #sbi_load .sbi_load_btn,
 #sb_instagram .sbi_follow_btn a,
 .site-footer {
