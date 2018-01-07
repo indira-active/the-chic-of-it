@@ -18,3 +18,25 @@ body {
 h1, h2, h3, h4, h5, h6 {
 	font-family: $font-heading;
 }
+
+/**
+ * Misc. font family fixes
+ */
+.page article h2,
+.single-post article h2 {
+	font-family: $font-heading;
+}
+
+.genesis-nav-menu,
+.nav-primary a,
+.entry-header .entry-meta a,
+a.more-link,
+.more-from-category a,
+.content article .custom-date,
+.single-post .content article .custom-date,
+.widget-title,
+#sb_instagram #sbi_load .sbi_load_btn,
+#sb_instagram .sbi_follow_btn a,
+.site-footer {
+	font-family: $font-body;
+}
