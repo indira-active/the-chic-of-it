@@ -1,6 +1,17 @@
 /**
- * Typography
+ * Blog archive & blog global
  *
  * @package indira
  * @since 1.0.0
  */
+
+.content article .custom-date {
+    background: $gray-dark;
+    color: $white;
+    font-style: normal;
+}
+
+a.more-link, .more-from-category a {
+    font-size: 14px;
+    padding: 10px 44px;
+}

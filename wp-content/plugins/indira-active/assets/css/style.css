@@ -99,6 +99,20 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
   font-family: "Open Sans", sans-serif; }
 
 /**
+ * Main styles (basically misc)
+ *
+ * @package indira
+ * @since 1.0.0
+ */
+@media only screen and (max-width: 1200px) {
+  .content, .site-header .widget-area {
+    width: 620px; } }
+
+@media only screen and (max-width: 1200px) {
+  .sidebar-primary, .title-area {
+    width: 310px; } }
+
+/**
  * Header
  *
  * @package indira
@@ -128,7 +142,9 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
     margin-top: 9px; }
   @media only screen and (max-width: 1200px) {
     .site-header {
-      padding-left: 10px; } }
+      padding-left: 10px; }
+      .site-header .widget-area {
+        width: 300px; } }
   @media only screen and (max-width: 960px) {
     .site-header {
       min-height: 0px; }
@@ -234,17 +250,20 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
       margin-top: 0; } }
 
 /**
- * Main styles (basically misc)
+ * Blog archive & blog global
  *
  * @package indira
  * @since 1.0.0
  */
-/**
- * Typography
- *
- * @package indira
- * @since 1.0.0
- */
+.content article .custom-date {
+  background: #333333;
+  color: #ffffff;
+  font-style: normal; }
+
+a.more-link, .more-from-category a {
+  font-size: 14px;
+  padding: 10px 44px; }
+
 /**
  * Form
  *
@@ -254,3 +273,16 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
 input, select, textarea {
   font-size: 12px;
   border: 1px solid #f1f1f1; }
+
+/**
+ * Button
+ *
+ * @package indira
+ * @since 1.0.0
+ */
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"],
+.button {
+  font-size: 14px; }

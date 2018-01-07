@@ -4,3 +4,18 @@
  * @package indira
  * @since 1.0.0
  */
+
+// content/sidebar balance
+.content, .site-header .widget-area {
+
+    @media only screen and (max-width: 1200px) {
+        width: 620px;
+	}
+}
+
+.sidebar-primary, .title-area {
+
+    @media only screen and (max-width: 1200px) {
+        width: 310px;
+	}
+}
