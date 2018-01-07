@@ -106,10 +106,30 @@ a.more-link,
  * Top bar
  */
 .nav-primary {
+  padding: 0 5px;
   background: #333333; }
+  .nav-primary > .wrap {
+    max-width: none; }
   .nav-primary a {
     color: #ffffff;
-    font-size: 0.93333rem; }
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px; }
+    .nav-primary a .icon {
+      display: inline-block;
+      vertical-align: middle;
+      margin: -17px 7px 0 0;
+      height: 14px;
+      font-size: 30px; }
+
+/**
+ * General navigation
+ */
+.genesis-nav-menu > .right {
+  padding: 0; }
+  .genesis-nav-menu > .right a {
+    display: inline-block;
+    padding: 15px; }
 
 /**
  * Navigation
