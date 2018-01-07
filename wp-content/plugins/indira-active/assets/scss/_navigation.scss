@@ -5,3 +5,78 @@
  * @since 1.0.0
  */
 
+/**
+ * Top bar
+ */
+.nav-primary {
+	padding: 0 5px;
+	background: $gray-dark;
+
+	> .wrap {
+		max-width: none;
+	}
+
+	a {
+		color: $white;
+		font-size: 14px;
+		text-transform: uppercase;
+		letter-spacing: $letter-spacing-medium;
+
+		.icon {
+			display: inline-block;
+			vertical-align: middle;
+			margin: -17px 7px 0 0;
+			height: 14px;
+			font-size: 30px;
+		}
+    }
+    
+	@media only screen and (max-width: 1024px) {
+        padding: 0;
+        background: $gray-lightest;
+    }
+}
+
+
+/**
+ * General navigation
+ */
+.genesis-nav-menu {
+
+	> .right {
+		padding: 0;
+
+		a {
+			display: inline-block;
+			padding: 15px;
+		}
+	}
+}
+
+
+.genesis-responsive-menu .genesis-nav-menu .menu-item a {
+    color: $black;
+    font-size: 15px;
+}
+
+
+// reorder mobile links
+#menu-top-bar {
+    @media only screen and (max-width: 1024px) {
+        display: flex;
+        flex-flow: row wrap;
+
+        li {
+            width: 100%;
+
+            &.mobile-bottom {
+                order: 100;
+            }
+        }
+    } // bp
+}
+
+.nav-header-left {
+    margin-top: 0;
+    text-align: left;
+}

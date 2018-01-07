@@ -5,45 +5,33 @@
  * @since 1.0.0
  */
 
-/**
- * Top bar
- */
-.nav-primary {
-	padding: 0 5px;
-	background: $gray-dark;
+.site-header {
+	min-height: 0px;
 
-	> .wrap {
+	.wrap {
+		padding: 0 15px;
 		max-width: none;
 	}
 
-	a {
-		color: $white;
-		font-size: 14px;
-		text-transform: uppercase;
-		letter-spacing: $letter-spacing-medium;
+	.widget-area {
+		padding: 0;
+	}
 
-		.icon {
-			display: inline-block;
-			vertical-align: middle;
-			margin: -17px 7px 0 0;
-			height: 14px;
-			font-size: 30px;
-		}
+	.search-form {
+		width: 60%;
+	// 	float: none;
+	}
+
+	@media only screen and (max-width: 1200px) {
+
+		// .widget-area {
+		// 	width: 250px;
+		// }
 	}
 }
 
-
-/**
- * General navigation
- */
-.genesis-nav-menu {
-
-	> .right {
-		padding: 0;
-
-		a {
-			display: inline-block;
-			padding: 15px;
-		}
-	}
+.site-title {
+	font-size: 22px;
+	letter-spacing: 20px;
+	font-weight: 400;
 }
