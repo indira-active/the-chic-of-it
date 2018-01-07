@@ -11,6 +11,42 @@
  * @since 1.0.0
  */
 /**
+ * Flex "row"
+ */
+/**
+ * Font Icon
+ */
+/**
+ * Truncate text
+ */
+/**
+ * Remove bottom margin if last child
+ */
+/**
+ * Remove top margin if first child
+ */
+/**
+ * WYSIWYG Content Format
+ */
+/**
+ * Kill font smoothing
+ */
+/**
+ * Fluid Property!
+ */
+/**
+ * Overlay
+ */
+/**
+ * Generic transition
+ */
+/**
+ * Clearfix
+ */
+/**
+ * Rem Calc
+ */
+/**
  * Variables
  *
  * @package indira
@@ -59,6 +95,21 @@ a.more-link,
 #sb_instagram .sbi_follow_btn a,
 .site-footer {
   font-family: "Open Sans", sans-serif; }
+
+/**
+ * Header
+ *
+ * @package indira
+ * @since 1.0.0
+ */
+/**
+ * Top bar
+ */
+.nav-primary {
+  background: #333333; }
+  .nav-primary a {
+    color: #ffffff;
+    font-size: 0.93333rem; }
 
 /**
  * Navigation
