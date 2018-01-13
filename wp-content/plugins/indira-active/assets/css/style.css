@@ -89,7 +89,6 @@ h1, h2, h3, h4, h5, h6 {
  */
 .page article h2,
 .single-post article h2 {
-  margin-bottom: 5px;
   font-family: "Open Sans", sans-serif;
   font-size: 30px;
   letter-spacing: 2px; }
@@ -117,6 +116,10 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
  */
 .site-container {
   background: radial-gradient(farthest-corner at 20% 2%, #fffadf, #e3dde1, #efe5fb, #dae2e4); }
+
+.site-footer {
+  border-top: 1px solid #cccccc;
+  font-size: 13px; }
 
 /**
  * Header
@@ -262,8 +265,8 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
  * @since 1.0.0
  */
 .content article .custom-date {
-  background: #333333;
-  color: #ffffff;
+  background: #f6f1e0;
+  color: #333333;
   font-style: normal; }
 
 a.more-link, .more-from-category a {
