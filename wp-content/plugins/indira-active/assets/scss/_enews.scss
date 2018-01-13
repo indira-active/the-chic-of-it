@@ -8,5 +8,6 @@
 .sidebar .enews-widget {
     box-shadow: 0 2px 20px rgba( $pink, 0.2 );
     background: $white;
-    border: 20px solid $pink;
+    border-color: $pink;
+    // border: 15px solid $pink;
 }

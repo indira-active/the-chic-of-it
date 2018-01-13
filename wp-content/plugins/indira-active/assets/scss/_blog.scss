@@ -19,6 +19,21 @@
     height: auto;
 }
 
+
+// add space to top of desktop entry title
+@media only screen and (min-width: 1200px) {
+
+    // .search h2.entry
+
+    .search, .page, .archive {
+        article h2 {
+            padding-top: 20px;
+        }
+    }
+}
+
+
+
 // date
 .content article,
 .single-post .content article {

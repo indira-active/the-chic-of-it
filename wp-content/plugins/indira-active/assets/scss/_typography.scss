@@ -21,7 +21,7 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: $font-heading;
 }
 
-.entry-title, .page-title {
+.page-title {
 	font-size: 37px;
 }
 
@@ -42,6 +42,7 @@ h1, h2, h3, h4, h5, h6 {
 	letter-spacing: $letter-spacing-large;
 }
 
+
 .genesis-nav-menu,
 .genesis-responsive-menu .genesis-nav-menu .menu-item a,
 .nav-primary a,
@@ -54,6 +55,7 @@ a.more-link,
 button, input[type="button"], input[type="reset"], input[type="submit"], .button
 #sb_instagram #sbi_load .sbi_load_btn,
 #sb_instagram .sbi_follow_btn a,
-.site-footer {
+.site-footer,
+.announcement-widget {
 	font-family: $font-body;
 }

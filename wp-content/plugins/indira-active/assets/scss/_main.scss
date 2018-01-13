@@ -34,3 +34,16 @@
     border-top: 1px solid $gray-light;
     font-size: 13px;
 }
+
+
+.announcement-widget {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: 12px;
+    letter-spacing: $letter-spacing-large;
+    background: $pink-lighter;
+
+    p {
+        margin: 0;
+    }
+}
