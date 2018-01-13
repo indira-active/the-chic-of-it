@@ -264,10 +264,14 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
  * @package indira
  * @since 1.0.0
  */
-.content article .custom-date {
+.content article .custom-date,
+.single-post .content article .custom-date {
   background: #f6f1e0;
   color: #333333;
   font-style: normal; }
+  .content article .custom-date .my-date-month,
+  .single-post .content article .custom-date .my-date-month {
+    padding-left: 4px; }
 
 a.more-link, .more-from-category a {
   font-size: 14px;
