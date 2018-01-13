@@ -5,13 +5,24 @@
  * @since 1.0.0
  */
 
-.content article .custom-date {
-    background: $gray-dark;
-    color: $white;
-    font-style: normal;
+.content article {
+    .custom-date {
+        background: $gray-dark;
+        color: $white;
+        font-style: normal;
+    }
 }
 
 a.more-link, .more-from-category a {
     font-size: 14px;
     padding: 10px 44px;
+}
+
+.entry-footer {
+    padding-bottom: 2px;
+    background: $gray-lightest;
+}
+
+.content article, .sidebar .widget {
+    box-shadow: 0 2px 15px rgba( $black, 0.01 );
 }

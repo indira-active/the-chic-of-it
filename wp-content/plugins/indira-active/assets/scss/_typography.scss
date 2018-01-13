@@ -10,6 +10,7 @@
  */
 body {
 	font-family: $font-body;
+	font-size: $global-font-size;
 }
 
 
@@ -20,13 +21,26 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: $font-heading;
 }
 
+.entry-title, .page-title {
+	font-size: 37px;
+}
+
+
+.widget-title {
+	font-size: 24px;
+	letter-spacing: 2px;
+}
+
 
 /**
  * Misc. font family fixes
  */
 .page article h2,
 .single-post article h2 {
+	margin-bottom: 5px;
 	font-family: $font-heading;
+	font-size: 30px;
+	letter-spacing: $letter-spacing-large;
 }
 
 .genesis-nav-menu,

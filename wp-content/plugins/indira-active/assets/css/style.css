@@ -68,7 +68,8 @@
  * Global
  */
 body {
-  font-family: "Open Sans", sans-serif; }
+  font-family: "Open Sans", sans-serif;
+  font-size: 15px; }
 
 /**
  * Headings
@@ -76,12 +77,22 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: "Open Sans", sans-serif; }
 
+.entry-title, .page-title {
+  font-size: 37px; }
+
+.widget-title {
+  font-size: 24px;
+  letter-spacing: 2px; }
+
 /**
  * Misc. font family fixes
  */
 .page article h2,
 .single-post article h2 {
-  font-family: "Open Sans", sans-serif; }
+  margin-bottom: 5px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 30px;
+  letter-spacing: 2px; }
 
 .genesis-nav-menu,
 .genesis-responsive-menu .genesis-nav-menu .menu-item a,
@@ -104,6 +115,9 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
  * @package indira
  * @since 1.0.0
  */
+.site-container {
+  background: radial-gradient(farthest-corner at 20% 2%, #fffadf, #e3dde1, #efe5fb, #dae2e4); }
+
 /**
  * Header
  *
@@ -256,6 +270,14 @@ a.more-link, .more-from-category a {
   font-size: 14px;
   padding: 10px 44px; }
 
+.entry-footer {
+  padding-bottom: 2px;
+  background: #f1f1f1; }
+
+.content article, .sidebar .widget {
+  -webkit-box-shadow: 0 2px 15px rgba(0, 0, 0, 0.01);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.01); }
+
 /**
  * Form
  *
@@ -278,3 +300,24 @@ input[type="reset"],
 input[type="submit"],
 .button {
   font-size: 14px; }
+
+/**
+ * eNews Extended widget
+ *
+ * @package indira
+ * @since 1.0.0
+ */
+.sidebar .enews-widget {
+  -webkit-box-shadow: 0 2px 20px rgba(208, 59, 119, 0.2);
+  box-shadow: 0 2px 20px rgba(208, 59, 119, 0.2);
+  background: #ffffff;
+  border: 20px solid #d03b77; }
+
+/**
+ * Social icon/sharing
+ *
+ * @package indira
+ * @since 1.0.0
+ */
+.simple-social-icons ul li {
+  margin: 1px !important; }
