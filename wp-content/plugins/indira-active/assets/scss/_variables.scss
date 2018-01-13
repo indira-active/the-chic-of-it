@@ -4,3 +4,27 @@
  * @package indira
  * @since 1.0.0
  */
+
+/**
+ * Colors
+ */
+$pink					: #d03b77;
+$pink-lighter           : #edd2dd;
+$gray-light             : #cccccc;
+$gray-lightest			: #f1f1f1;
+$gray-dark				: #333333;
+$white					: #ffffff;
+$black					: #000000;
+$transparent			: rgba( $white, 0 );
+
+
+/**
+ * Fonts & typography spacing
+ */
+$letter-spacing-medium	: 1px;
+$letter-spacing-large	: 2px;
+
+$global-font-size		: 15px;
+$font-heading			: 'Open Sans', sans-serif;
+$font-body				: 'Open Sans', sans-serif;
+// $font-icon				: 'FontAwesome';

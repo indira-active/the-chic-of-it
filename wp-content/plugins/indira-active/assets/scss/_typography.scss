@@ -4,3 +4,58 @@
  * @package indira
  * @since 1.0.0
  */
+
+/**
+ * Global
+ */
+body {
+	font-family: $font-body;
+	font-size: $global-font-size;
+}
+
+
+/**
+ * Headings
+ */
+h1, h2, h3, h4, h5, h6 {
+	font-family: $font-heading;
+}
+
+.page-title {
+	font-size: 37px;
+}
+
+
+.widget-title {
+	font-size: 24px;
+	letter-spacing: 2px;
+}
+
+
+/**
+ * Misc. font family fixes
+ */
+.page article h2,
+.single-post article h2 {
+	font-family: $font-heading;
+	font-size: 30px;
+	letter-spacing: $letter-spacing-large;
+}
+
+
+.genesis-nav-menu,
+.genesis-responsive-menu .genesis-nav-menu .menu-item a,
+.nav-primary a,
+.entry-header .entry-meta a,
+a.more-link,
+.more-from-category a,
+.content article .custom-date,
+.single-post .content article .custom-date,
+.widget-title,
+button, input[type="button"], input[type="reset"], input[type="submit"], .button
+#sb_instagram #sbi_load .sbi_load_btn,
+#sb_instagram .sbi_follow_btn a,
+.site-footer,
+.announcement-widget {
+	font-family: $font-body;
+}

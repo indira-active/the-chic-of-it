@@ -1,0 +1,105 @@
+/**
+ * Navigation
+ *
+ * @package indira
+ * @since 1.0.0
+ */
+
+/**
+ * Top bar
+ */
+.nav-primary {
+	padding: 0 5px;
+	background: $gray-dark;
+
+	> .wrap {
+		max-width: none;
+	}
+
+	a {
+		color: $white;
+		font-size: 14px;
+		text-transform: uppercase;
+		letter-spacing: $letter-spacing-medium;
+
+		.icon {
+			display: inline-block;
+			vertical-align: middle;
+			margin: -17px 7px 0 0;
+			height: 14px;
+			font-size: 30px;
+		}
+    }
+    
+	@media only screen and (max-width: 1024px) {
+        padding: 10px 0;
+		background: $white;
+		border-bottom: 2px solid $gray-lightest;
+    }
+}
+
+
+/**
+ * General navigation
+ */
+.genesis-nav-menu {
+
+	> .right {
+		padding: 0;
+
+		a {
+			display: inline-block;
+			padding: 15px;
+		}
+	}
+
+	.sub-menu {
+		background: $pink;
+
+		&:after {
+			border-bottom-color: $pink;
+		}
+
+		a {
+			color: $white;
+		}
+	}
+} // .genesis-nav-menu
+
+
+.genesis-responsive-menu .genesis-nav-menu .menu-item a {
+	font-size: 15px;
+
+	@media only screen and (max-width: 1024px) {
+		color: $black;
+    }
+}
+
+
+// reorder mobile links
+#menu-top-bar {
+
+    @media only screen and (max-width: 1024px) {
+        display: flex;
+        flex-flow: row wrap;
+
+        li {
+            width: 100%;
+
+            &.mobile-bottom {
+                order: 100;
+            }
+        }
+    } // bp
+}
+
+
+// main navigation
+.nav-header-left {
+    margin-top: 5px;
+	text-align: left;
+	
+	@media only screen and (max-width: 1024px) {
+		margin-top: 0;
+    }
+}
