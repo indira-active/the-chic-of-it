@@ -5,12 +5,26 @@
  * @since 1.0.0
  */
 
+
+// "boxes"
+.content article, .sidebar .widget {
+    box-shadow: 0 2px 15px rgba( $black, 0.01 );
+}
+
+// make image a little smaller and add a little more
+// side spacing
+.content article .entry-image-link .entry-image {
+    margin-right: 30px;
+    width: 380px;
+    height: auto;
+}
+
 // date
 .content article,
 .single-post .content article {
 
     .custom-date {
-        background: #f6f1e0; //$gray-dark;
+        background: #f4f0e5; //$gray-dark;
         color: $gray-dark; //$white;
         font-style: normal;
 
@@ -30,9 +44,4 @@ a.more-link, .more-from-category a {
 .entry-footer {
     padding-bottom: 2px;
     background: $gray-lightest;
-}
-
-// "boxes"
-.content article, .sidebar .widget {
-    box-shadow: 0 2px 15px rgba( $black, 0.01 );
 }

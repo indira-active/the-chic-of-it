@@ -6,24 +6,29 @@
  */
 
 .site-container {
-    // background: radial-gradient( farthest-corner at 20% 2%, #ffe339, #a0247b, #561a96, #14caef);
-    background: radial-gradient(farthest-corner at 20% 2%,#fffadf,#e3dde1,#efe5fb,#dae2e4);
+    // background: radial-gradient( farthest-corner at 20% 2%, #ffe339, #a0247b, #561a96, #14caef);  // most colorfull
+    // background: radial-gradient(farthest-corner at 20% 2%,#fffadf,#e3dde1,#efe5fb,#dae2e4); // desatured
+    background: radial-gradient(farthest-corner at 20% 2%,#fbf7e6,#e3dde1,#f0eef2,#dae2e4)  // even more desaturated
 }
 
-// // content/sidebar balance
-// .content, .site-header .widget-area {
 
-//     @media only screen and (max-width: 1200px) {
-//         width: 620px;
-// 	}
-// }
+// fix desktop content/sidebar balance and
+// main page spacing
+@media only screen and (min-width: 1200px) {
 
-// .sidebar-primary, .title-area {
+    .site-inner {
+        margin-top: 52px;
+    }
 
-//     @media only screen and (max-width: 1200px) {
-//         width: 310px;
-// 	}
-// }
+    .content {
+        width: 810px;
+    }
+
+    .sidebar .widget {
+        margin-bottom: 30px;
+    }
+}
+
 
 .site-footer {
     border-top: 1px solid $gray-light;
