@@ -4,3 +4,46 @@
  * @package indira
  * @since 1.0.0
  */
+
+.site-container {
+    // background: radial-gradient( farthest-corner at 20% 2%, #ffe339, #a0247b, #561a96, #14caef);  // most colorfull
+    // background: radial-gradient(farthest-corner at 20% 2%,#fffadf,#e3dde1,#efe5fb,#dae2e4); // desatured
+    background: radial-gradient(farthest-corner at 20% 2%,#fbf7e6,#e3dde1,#f0eef2,#dae2e4)  // even more desaturated
+}
+
+
+// fix desktop content/sidebar balance and
+// main page spacing
+@media only screen and (min-width: 1200px) {
+
+    .site-inner {
+        margin-top: 52px;
+    }
+
+    .content {
+        width: 810px;
+    }
+
+    .sidebar .widget {
+        margin-bottom: 30px;
+    }
+}
+
+
+.site-footer {
+    border-top: 1px solid $gray-light;
+    font-size: 13px;
+}
+
+
+.announcement-widget {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: 12px;
+    letter-spacing: $letter-spacing-large;
+    background: $pink-lighter;
+
+    p {
+        margin: 0;
+    }
+}

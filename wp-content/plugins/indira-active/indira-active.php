@@ -97,6 +97,8 @@ final class Indira_Active {
 
 		// load every time
 		$includes = array(
+			'class-header',
+			'class-footer',
 			'functions',
 		);
 
@@ -170,20 +172,21 @@ final class Indira_Active {
 	 */
 	public function enqueue_scripts() {
 
+		// kill Refined theme stuff
+		wp_dequeue_style( 'google-font' );
+
+
 		$assets    = IA_PLUGIN_URL . 'assets/';
 		$post_type = indira_get_current_post_type();
 
 		// Google Fonts
 		wp_enqueue_style( 'indira-google-fonts', 'https://fonts.googleapis.com/css?family=Open+Sans:300,300i', array(), '' );
 
-		// scripts
-		wp_enqueue_script(
-			'indira-scripts', $assets . 'js/foot.min.js',
-			array( 'jquery' ), false, true
-		);
+		// main custom styles
+		wp_enqueue_style( 'indira-styles', $assets . 'css/style.min.css', array(), '', 'all' );
 
-		// kill Refined theme stuff
-		wp_dequeue_style( 'google-font' );
+		// scripts
+		// wp_enqueue_script( 'indira-scripts', $assets . 'js/foot.min.js', array( 'jquery' ), false, true );
 	}
 }
 
@@ -200,3 +203,6 @@ function IA() {
 
 // SPINSIES
 IA();
+
+
+remove_filter( 'wp_nav_menu_items', 'refined_primary_nav_extras', 10 );

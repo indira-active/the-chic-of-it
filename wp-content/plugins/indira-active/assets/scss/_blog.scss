@@ -1,0 +1,62 @@
+/**
+ * Blog archive & blog global
+ *
+ * @package indira
+ * @since 1.0.0
+ */
+
+
+// "boxes"
+.content article, .sidebar .widget {
+    box-shadow: 0 2px 15px rgba( $black, 0.01 );
+}
+
+// make image a little smaller and add a little more
+// side spacing
+.content article .entry-image-link .entry-image {
+    margin-right: 30px;
+    width: 380px;
+    height: auto;
+}
+
+
+// add space to top of desktop entry title
+@media only screen and (min-width: 1200px) {
+
+    // .search h2.entry
+
+    .search, .page, .archive {
+        article h2 {
+            padding-top: 20px;
+        }
+    }
+}
+
+
+
+// date
+.content article,
+.single-post .content article {
+
+    .custom-date {
+        background: #f4f0e5; //$gray-dark;
+        color: $gray-dark; //$white;
+        font-style: normal;
+
+        .my-date-month {
+            padding-left: 4px;
+        }
+    }
+}
+
+// "read more" link / button
+a.more-link, .more-from-category a {
+    font-size: 14px;
+    padding: 10px 44px;
+}
+
+// post footer
+.entry-footer {
+    padding-bottom: 2px;
+    background: $gray-lightest;
+}
