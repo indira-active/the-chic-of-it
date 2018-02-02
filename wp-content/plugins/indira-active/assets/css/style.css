@@ -370,7 +370,8 @@ a.more-link, .more-from-category a {
  */
 input, select, textarea {
   font-size: 12px;
-  border: 1px solid #f1f1f1; }
+  border: 1px solid #f1f1f1;
+  border-radius: 0; }
 
 /**
  * Button
