@@ -289,6 +289,31 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
       margin-top: 0; } }
 
 /**
+ * Secondary "below header" menu
+ */
+.nav-secondary {
+  padding-bottom: 0;
+  background: #333333; }
+  .nav-secondary .wrap {
+    padding-bottom: 0;
+    background: none; }
+  .nav-secondary .current-menu-item a {
+    color: #ffffff;
+    -webkit-box-shadow: inset 0 -4px 0 0 #d03b77;
+    box-shadow: inset 0 -4px 0 0 #d03b77; }
+  .nav-secondary a {
+    padding: 15px 20px;
+    color: #f1f1f1;
+    -webkit-box-shadow: inset 0 0 0 0 #d03b77;
+    box-shadow: inset 0 0 0 0 #d03b77; }
+    .nav-secondary a:hover {
+      color: #ffffff;
+      -webkit-box-shadow: inset 0 -4px 0 0 #d03b77;
+      box-shadow: inset 0 -4px 0 0 #d03b77; }
+  .nav-secondary .genesis-nav-menu .menu-item a {
+    font-size: 14px; }
+
+/**
  * Blog archive & blog global
  *
  * @package indira
