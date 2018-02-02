@@ -42,6 +42,29 @@ h1, h2, h3, h4, h5, h6 {
 	letter-spacing: $letter-spacing-large;
 }
 
+// "subtitle"
+.page article h2 strong,
+.single-post article h1 strong,
+.archive article h2 strong {
+	position: relative;
+	top: -10px;
+	display: inline-block;
+	background: $pink;
+	color: $white;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 400;
+	padding: 3px 16px;
+
+	// "inline" pink text style
+	// display: block;
+	// margin-top: 4px;
+	// font-size: 16px;
+	// font-weight: 400;
+	// letter-spacing: $letter-spacing-medium;
+	// color: $pink;
+}
+
 
 .genesis-nav-menu,
 .genesis-responsive-menu .genesis-nav-menu .menu-item a,
