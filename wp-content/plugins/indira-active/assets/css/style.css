@@ -197,7 +197,8 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
 .site-description {
   color: #d03b77;
   font-size: 12px;
-  letter-spacing: 7.25px; }
+  letter-spacing: 7.25px;
+  line-height: 18px; }
 
 @media only screen and (max-width: 1024px) {
   .menu-toggle {
