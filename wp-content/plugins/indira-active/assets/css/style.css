@@ -347,8 +347,8 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
 
 .content article .custom-date,
 .single-post .content article .custom-date {
-  background: #f4f0e5;
-  color: #333333;
+  background: #d03b77;
+  color: #ffffff;
   font-style: normal; }
   .content article .custom-date .my-date-month,
   .single-post .content article .custom-date .my-date-month {
