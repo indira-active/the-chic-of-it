@@ -130,7 +130,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
  * @since 1.0.0
  */
 .site-container {
-  background: radial-gradient(farthest-corner at 20% 2%, #fbf7e6, #e3dde1, #f0eef2, #dae2e4); }
+  background: linear-gradient(7deg, #a2298c 6%, #dfacb6 22%, transparent 60%, transparent 75%, #f8ebbd 89%); }
 
 @media only screen and (min-width: 1200px) {
   .site-inner {

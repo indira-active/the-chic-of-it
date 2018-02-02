@@ -8,7 +8,12 @@
 .site-container {
     // background: radial-gradient( farthest-corner at 20% 2%, #ffe339, #a0247b, #561a96, #14caef);  // most colorfull
     // background: radial-gradient(farthest-corner at 20% 2%,#fffadf,#e3dde1,#efe5fb,#dae2e4); // desatured
-    background: radial-gradient(farthest-corner at 20% 2%,#fbf7e6,#e3dde1,#f0eef2,#dae2e4)  // even more desaturated
+
+    // before "vibrant" request
+    // background: radial-gradient(farthest-corner at 20% 2%,#fbf7e6,#e3dde1,#f0eef2,#dae2e4)  // even more desaturated
+
+    // attempted "vibrant" request
+    background: linear-gradient( 7deg, #a2298c 6%, #dfacb6 22%, transparent 60%, transparent 75%, #f8ebbd 89% );
 }
 
 
