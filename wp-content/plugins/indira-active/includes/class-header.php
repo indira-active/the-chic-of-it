@@ -17,19 +17,20 @@ class IA_Header {
 	 * @since 1.0.0
 	 */
 	function __construct() {
-		add_action( 'init', array( __CLASS__ , 'remove_filters' ) );
+		add_action( 'init', array( __CLASS__ , 'init' ) );
 	}
 
 
 	/**
-	 * Misc filter removals
+	 * Fire off misc filters/actions that need to happen on init
 	 *
 	 * Stuff like deleting the topbar's search
 	 *
 	 * @since 1.0.0
 	 */
-	public static function remove_filters() {
-		remove_filter( 'wp_nav_menu_items', 'refined_primary_nav_extras', 10 );
+	public static function init() {
+		add_action(    'genesis_site_description' , 'genesis_seo_site_description'     );
+		remove_filter( 'wp_nav_menu_items'        , 'refined_primary_nav_extras'  , 10 );
 	}
 }
 
