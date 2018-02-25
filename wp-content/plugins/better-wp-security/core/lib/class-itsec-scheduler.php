@@ -68,8 +68,9 @@ abstract class ITSEC_Scheduler {
 	/**
 	 * Is a single event scheduled with the given data.
 	 *
-	 * @param string $id
-	 * @param array  $data
+	 * @param string     $id   The event ID to check.
+	 * @param array|null $data The event data. Pass null to check if any event is scheduled with that ID,
+	 *                         regardless of the data.
 	 *
 	 * @return bool
 	 */

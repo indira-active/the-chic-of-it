@@ -2,8 +2,8 @@
 Contributors: ithemes, chrisjean, gerroald, mattdanner, timothyblynjacobs
 Tags: security, security plugin, malware, hack, secure, block, SSL, admin, htaccess, lockdown, login, protect, protection, anti virus, attack, injection, login security, maintenance, permissions, prevention, authentication, administration, password, brute force, ban, permissions, bots, user agents, xml rpc, security log
 Requires at least: 4.7
-Tested up to: 4.9.2
-Stable tag: 6.8.1
+Tested up to: 4.9.4
+Stable tag: 6.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -187,6 +187,11 @@ Free support may be available with the help of the community in the <a href="htt
 5. Free malware scan powered by Sucuri SiteCheck.
 
 == Changelog ==
+
+= 6.9.0 =
+* Enhancement: Updated logging system to keep track of more information and have more options to filter and sort log entries.
+* Enhancement: Improved efficiency of File Change Detection scanning.
+* Bug Fix: Fixed issue that could register loading the logging page as a failed login attempt on some sites.
 
 = 6.8.1 =
 * Enhancement: Display user lockouts in Lockout Sidebar.
@@ -400,5 +405,5 @@ Free support may be available with the help of the community in the <a href="htt
 
 == Upgrade Notice ==
 
-= 6.8.1 =
-Version 6.8.1 contains important bug fixes and improvements. It is recommended for all users.
+= 6.9.0 =
+Version 6.9.0 contains an improved logging system and bug fixes. It is recommended for all users.

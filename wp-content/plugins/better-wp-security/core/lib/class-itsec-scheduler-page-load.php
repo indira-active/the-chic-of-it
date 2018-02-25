@@ -79,15 +79,18 @@ class ITSEC_Scheduler_Page_Load extends ITSEC_Scheduler {
 
 	public function is_single_scheduled( $id, $data = array() ) {
 
-		$hash    = $this->hash_data( $data );
 		$options = $this->get_options();
 
 		if ( empty( $options['single'][ $id ] ) ) {
 			return false;
 		}
 
-		if ( empty( $options['single'][ $id ][ $hash ] ) ) {
-			return false;
+		if ( null !== $data ) {
+			$hash = $this->hash_data( $data );
+
+			if ( empty( $options['single'][ $id ][ $hash ] ) ) {
+				return false;
+			}
 		}
 
 		return true;

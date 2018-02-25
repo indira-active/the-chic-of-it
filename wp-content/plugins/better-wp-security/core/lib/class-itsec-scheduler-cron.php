@@ -86,6 +86,23 @@ class ITSEC_Scheduler_Cron extends ITSEC_Scheduler {
 	}
 
 	public function is_single_scheduled( $id, $data = array() ) {
+
+		if ( null === $data ) {
+			$options = $this->get_options();
+
+			if ( ! isset( $options['single'][ $id ] ) ) {
+				return false;
+			}
+
+			foreach ( $options['single'][ $id ] as $hash => $event ) {
+				if ( wp_next_scheduled( self::HOOK, array( $id, $hash ) ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		return (bool) wp_next_scheduled( self::HOOK, array( $id, $this->hash_data( $data ) ) );
 	}
 

@@ -717,3 +717,7 @@
 	Bug Fix: Update to the REST API "Restricted Access" feature to protect against methods to work around the restricted access.
 	Bug Fix: Prevent login page being hidden when following the "Confirm Email Address" notification URL.
 	Bug Fix: Hide Backend notifications not being properly sent when first enabled.
+6.9.0 - 2018-02-12 - Chris Jean & Timothy Jacobs
+	Enhancement: Updated logging system to keep track of more information and have more options to filter and sort log entries.
+	Enhancement: Improved efficiency of File Change Detection scanning.
+	Bug Fix: Fixed issue that could register loading the logging page as a failed login attempt on some sites.
