@@ -39,8 +39,13 @@
 .single-post .content article {
 
     .custom-date {
-        background: #f4f0e5; //$gray-dark;
-        color: $gray-dark; //$white;
+        // background: #f4f0e5; //$gray-dark;
+        // color: $gray-dark; //$white;
+
+        // pink request
+        background: $pink;
+        color: $white;
+
         font-style: normal;
 
         .my-date-month {

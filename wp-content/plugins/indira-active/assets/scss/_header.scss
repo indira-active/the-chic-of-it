@@ -52,10 +52,25 @@
 	}
 }
 
+.title-area {
+	padding: 10px 0;
+}
+
 .site-title {
 	font-size: 22px;
 	letter-spacing: 20px;
 	font-weight: 400;
+
+	a {
+		margin-right: -10px;
+	}
+}
+
+.site-description {
+	color: $pink;
+	font-size: 12px;
+	letter-spacing: 7.25px;
+	line-height: 18px;
 }
 
 
