@@ -274,7 +274,6 @@ body.itsec-modal-open {
 .itsec-modal-content-footer .align-left{
 	float: left;
 }
-
 .itsec-modal-content-footer .align-right{
 	float: right;
 }
@@ -294,13 +293,14 @@ body.itsec-modal-open {
 .itsec-settings-section .itsec-setting-field {
 	margin-bottom: 1.5em;
 }
-
 .itsec-settings-module-settings .form-table th {
 	padding-left: 15px;
 }
-
 .itsec-settings-module-settings .itsec-highlighted-setting {
 	background: #e5f5fa;
+}
+.itsec-settings-module-settings .form-table td select {
+	margin: 1em 0;
 }
 
 

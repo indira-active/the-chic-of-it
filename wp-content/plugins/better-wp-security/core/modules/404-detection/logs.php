@@ -10,7 +10,7 @@ final class ITSEC_Four_Oh_Four_Logs {
 		$entry['module_display'] = esc_html__( '404 Detection', 'better-wp-security' );
 
 		if ( 'found_404' === $entry['code'] ) {
-			$entry['description'] = $entry['url'];
+			$entry['description'] = esc_html( $entry['url'] );
 		}
 
 		return $entry;

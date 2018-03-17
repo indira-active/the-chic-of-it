@@ -24,7 +24,7 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 		 *
 		 * @access private
 		 */
-		private $plugin_build = 4084;
+		private $plugin_build = 4087;
 
 		/**
 		 * Used to distinguish between a user modifying settings and the API modifying settings (such as from Sync
@@ -105,19 +105,21 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 			register_deactivation_hook( $this->plugin_file, array( 'ITSEC_Core', 'handle_deactivation' ) );
 			register_uninstall_hook( $this->plugin_file, array( 'ITSEC_Core', 'handle_uninstall' ) );
 
+			require( $this->plugin_dir . 'core/lib/settings.php' );
+			require( $this->plugin_dir . 'core/lib/storage.php' );
 			require( $this->plugin_dir . 'core/modules.php' );
+			require( $this->plugin_dir . 'core/lib.php' );
+			require( $this->plugin_dir . 'core/lib/log.php' );
+
 			add_action( 'itsec-register-modules', array( $this, 'register_modules' ) );
 			ITSEC_Modules::init_modules();
 
-			require( $this->plugin_dir . 'core/lib.php' );
 			require( $this->plugin_dir . 'core/lockout.php' );
 			require( $this->plugin_dir . 'core/files.php' );
 			require( $this->plugin_dir . 'core/notify.php' );
 			require( $this->plugin_dir . 'core/response.php' );
 			require( $this->plugin_dir . 'core/lib/class-itsec-lib-user-activity.php' );
 			require( $this->plugin_dir . 'core/lib/class-itsec-lib-password-requirements.php' );
-
-			require( $this->plugin_dir . 'core/lib/log.php' );
 
 			require( $this->plugin_dir . 'core/lib/class-itsec-scheduler.php' );
 			require( $this->plugin_dir . 'core/lib/class-itsec-job.php' );

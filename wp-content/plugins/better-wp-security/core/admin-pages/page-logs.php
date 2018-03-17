@@ -2,8 +2,6 @@
 
 
 final class ITSEC_Logs_Page {
-	private $version = 1.8;
-
 	private $self_url = '';
 	private $modules = array();
 	private $widgets = array();
@@ -54,12 +52,12 @@ final class ITSEC_Logs_Page {
 			'translations'  => $this->translations,
 		);
 
-		wp_enqueue_script( 'itsec-logs-page-script', plugins_url( 'js/logs.js', __FILE__ ), array( 'jquery-ui-dialog' ), $this->version, true );
+		wp_enqueue_script( 'itsec-logs-page-script', plugins_url( 'js/logs.js', __FILE__ ), array( 'jquery-ui-dialog' ), ITSEC_Core::get_plugin_build(), true );
 		wp_localize_script( 'itsec-logs-page-script', 'itsec_page', $vars );
 	}
 
 	public function add_styles() {
-		wp_enqueue_style( 'itsec-settings-page-style', plugins_url( 'css/style.css', __FILE__ ), array(), $this->version );
+		wp_enqueue_style( 'itsec-settings-page-style', plugins_url( 'css/style.css', __FILE__ ), array(), ITSEC_Core::get_plugin_build() );
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
 	}
 
@@ -260,6 +258,16 @@ final class ITSEC_Logs_Page {
 					$username = '';
 				}
 
+				if ( 'wp-cli' === $entry['url'] ) {
+					$url = esc_html__( 'WP-CLI Command', 'better-wp-security' );
+				} else if ( 'wp-cron' === $entry['url'] ) {
+					$url = esc_html__( 'WP-Cron Scheduled Task', 'better-wp-security' );
+				} else if ( 'unknown' === $entry['url'] ) {
+					$url = esc_html__( 'Unknown', 'better-wp-security' );
+				} else {
+					$url = esc_html( $entry['url'] );
+				}
+
 				$details = array(
 					'module'      => array(
 						'header'  => esc_html__( 'Module', 'better-wp-security' ),
@@ -287,7 +295,7 @@ final class ITSEC_Logs_Page {
 					),
 					'url'         => array(
 						'header'  => esc_html__( 'URL', 'better-wp-security' ),
-						'content' => '<code>' . esc_html( $entry['url'] ) . '</code>',
+						'content' => '<code>' . $url . '</code>',
 					),
 					'raw-details'    => array(
 						'header'  => esc_html__( 'Raw Details', 'better-wp-security' ),

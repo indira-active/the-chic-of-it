@@ -183,6 +183,25 @@ class ITSEC_Scheduler_Cron extends ITSEC_Scheduler {
 	}
 
 	public function unschedule_single( $id, $data = array() ) {
+
+		$options = $this->get_options();
+
+		if ( empty( $options['single'][ $id ] ) ) {
+			return false;
+		}
+
+		if ( null === $data ) {
+			$all_events = $options['single'][ $id ];
+
+			foreach ( $all_events as $data_hash => $event ) {
+				$cron_hash = md5( serialize( array( $id, $data_hash ) ) );
+				unset( $all_events[ $data_hash ] );
+				$this->unschedule_by_hash( $cron_hash );
+			}
+
+			return true;
+		}
+
 		$data_hash = $this->hash_data( $data );
 		$hash      = $this->make_cron_hash( $id, $data );
 

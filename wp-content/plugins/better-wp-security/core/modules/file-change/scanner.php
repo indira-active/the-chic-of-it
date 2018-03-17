@@ -68,7 +68,9 @@ final class ITSEC_File_Change_Scanner {
 		}
 
 		foreach ( $this->settings['file_list'] as $index => $path ) {
-			$this->settings['file_list'][$index] = untrailingslashit( $path );
+			$path = untrailingslashit( $path );
+			$path = '/' . ltrim( $path, '/' );
+			$this->settings['file_list'][$index] = $path;
 		}
 
 		$this->excludes = array(
@@ -76,12 +78,20 @@ final class ITSEC_File_Change_Scanner {
 			ITSEC_Modules::get_setting( 'global', 'log_location' ),
 		);
 
+		foreach ( $this->excludes as $index => $path ) {
+			$path = untrailingslashit( $path );
+			$path = preg_replace( '/^' . preg_quote( ABSPATH, '/' ) . '/', '', $path );
+			$path = ltrim( $path, '/' );
+			$this->excludes[$index] = $path;
+		}
+
 
 		$send_email = true;
 
 		ITSEC_Lib::set_minimum_memory_limit( '512M' );
 
 		define( 'ITSEC_DOING_FILE_CHECK', true );
+
 
 		//figure out what chunk we're on
 		if ( $this->settings['split'] ) {
@@ -94,33 +104,27 @@ final class ITSEC_File_Change_Scanner {
 
 			$db_field = 'itsec_local_file_list_' . $chunk;
 
-
-			$content_dir = explode( '/', WP_CONTENT_DIR );
-			$plugin_dir  = explode( '/', WP_PLUGIN_DIR );
 			$wp_upload_dir = ITSEC_Core::get_wp_upload_dir();
 
 			$dirs = array(
 				'wp-admin',
 				WPINC,
 				WP_CONTENT_DIR,
-				ITSEC_Core::get_wp_upload_dir(),
+				$wp_upload_dir['basedir'],
 				WP_CONTENT_DIR . '/themes',
 				WP_PLUGIN_DIR,
 				''
 			);
 
+			foreach ( $dirs as $index => $dir ) {
+				$dir = untrailingslashit( $dir );
+				$dirs[$index] = preg_replace( '/^' . preg_quote( ABSPATH, '/' ) . '/', '', $dir );
+			}
+
 			$path = $dirs[ $chunk ];
 
 			unset( $dirs[ $chunk ] );
-
 			$this->excludes = array_merge( $this->excludes, $dirs );
-
-			foreach ( $this->excludes as $index => $path ) {
-				$path = untrailingslashit( $path );
-				$path = preg_replace( '/^' . preg_quote( ABSPATH, '/' ) . '/', '', $path );
-
-				$this->excludes[$index] = $path;
-			}
 
 		} else {
 
@@ -135,7 +139,6 @@ final class ITSEC_File_Change_Scanner {
 
 		$logged_files = get_site_option( $db_field );
 
-		//if there are no old files old file list is an empty array
 		if ( false === $logged_files ) {
 
 			$send_email = false;
@@ -238,7 +241,7 @@ final class ITSEC_File_Change_Scanner {
 		);
 
 		$this->settings['latest_changes'] = array(
-			'added' => count( $files_added ),
+			'added'   => count( $files_added ),
 			'removed' => count( $files_removed ),
 			'changed' => count( $files_changed ),
 		);

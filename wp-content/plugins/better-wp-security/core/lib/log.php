@@ -70,6 +70,16 @@ final class ITSEC_Log {
 	}
 
 	private static function add( $module, $code, $data, $type, $parent_id = 0 ) {
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			$url = 'wp-cli';
+		} else if ( ( is_callable( 'wp_doing_cron' ) && wp_doing_cron() ) || ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
+			$url = 'wp-cron';
+		} else if ( isset( $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'] ) ) {
+			$url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		} else {
+			$url = 'unknown';
+		}
+
 		$data = array(
 			'parent_id'      => $parent_id,
 			'module'         => $module,
@@ -80,7 +90,7 @@ final class ITSEC_Log {
 			'init_timestamp' => gmdate( 'Y-m-d H:i:s', ITSEC_Core::get_current_time_gmt() ),
 			'memory_current' => memory_get_usage(),
 			'memory_peak'    => memory_get_peak_usage(),
-			'url'            => ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+			'url'            => $url,
 			'blog_id'        => get_current_blog_id(),
 			'user_id'        => get_current_user_id(),
 			'remote_ip'      => ITSEC_Lib::get_ip(),
@@ -96,6 +106,8 @@ final class ITSEC_Log {
 			$id = self::add_to_db( $data );
 			self::add_to_file( $data, $id );
 		}
+
+		do_action( 'itsec_log_add', $data, $id, $log_type );
 
 		return $id;
 	}
@@ -235,4 +247,74 @@ final class ITSEC_Log {
 			'process-start'  => esc_html__( 'Process', 'better-wp-security' ),
 		);
 	}
+
+	public static function register_events( $scheduler ) {
+		$scheduler->schedule( ITSEC_Scheduler::S_DAILY, 'purge-log-entries' );
+	}
+
+	public static function purge_entries() {
+		global $wpdb;
+
+		$database_entry_expiration = date( 'Y-m-d H:i:s', ITSEC_Core::get_current_time_gmt() - ( ITSEC_Modules::get_setting( 'global', 'log_rotation' ) * DAY_IN_SECONDS ) );
+		$query = $wpdb->prepare( "DELETE FROM `{$wpdb->base_prefix}itsec_logs` WHERE timestamp<%s", $database_entry_expiration );
+		$wpdb->query( $query );
+
+
+		$log_type = ITSEC_Modules::get_setting( 'global', 'log_type' );
+
+		if ( 'database' !== $log_type ) {
+			self::rotate_log_files();
+		}
+	}
+
+	public static function rotate_log_files() {
+		$log = self::get_log_file_path();
+		$max_file_size = 10 * 1024 * 1024; // 10MiB
+
+		if ( ! file_exists( $log ) || filesize( $log ) < $max_file_size ) {
+			return;
+		}
+
+
+		$files = glob( "$log.*" );
+
+		foreach ( $files as $index => $file ) {
+			if ( ! preg_match( '/^' . preg_quote( $log, '/' ) . '\.\d+$/', $file ) ) {
+				unset( $files[$index] );
+			}
+		}
+
+		natsort( $files );
+		$files = array_values( $files );
+
+		$files_to_delete = array();
+		$files_to_rotate = array();
+		$max_files = apply_filters( 'itsec_log_max_log_files', 100 );
+
+		foreach ( $files as $index => $file ) {
+			$number = intval( pathinfo( $file, PATHINFO_EXTENSION ) );
+
+			if ( $number > $max_files ) {
+				$files_to_delete[] = $file;
+			} else if ( $number === $index + 1 && $number !== $max_files ) {
+				$files_to_rotate[] = $file;
+			}
+		}
+
+		array_unshift( $files_to_rotate, $log );
+		krsort( $files_to_rotate );
+
+		foreach ( $files_to_rotate as $index => $file ) {
+			rename( $file, "$log." . ( $index + 1 ) );
+		}
+
+		touch( $log );
+
+		foreach ( $files_to_delete as $file ) {
+			unlink( $file );
+		}
+	}
 }
+
+add_action( 'itsec_scheduler_register_events', array( 'ITSEC_Log', 'register_events' ) );
+add_action( 'itsec_scheduled_purge-log-entries', array( 'ITSEC_Log', 'purge_entries' ) );

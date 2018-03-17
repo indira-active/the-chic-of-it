@@ -2,8 +2,6 @@
 
 
 final class ITSEC_Admin_Page_Loader {
-	private $version = 2.0;
-
 	private $page_refs = array();
 	private $page_id;
 	private $translations = array();
@@ -34,12 +32,12 @@ final class ITSEC_Admin_Page_Loader {
 			'translations' => $this->translations,
 		);
 
-		wp_enqueue_script( 'itsec-util-script', plugins_url( 'js/util.js', __FILE__ ), array(), $this->version, true );
+		wp_enqueue_script( 'itsec-util-script', plugins_url( 'js/util.js', __FILE__ ), array(), ITSEC_Core::get_plugin_build(), true );
 		wp_localize_script( 'itsec-util-script', 'itsec_util', $vars );
 	}
 
 	public function add_styles() {
-		wp_enqueue_style( 'itsec-settings-page-style', plugins_url( 'css/style.css', __FILE__ ), array(), $this->version );
+		wp_enqueue_style( 'itsec-settings-page-style', plugins_url( 'css/style.css', __FILE__ ), array(), ITSEC_Core::get_plugin_build() );
 	}
 
 	private function set_translation_strings() {
