@@ -1,13 +1,20 @@
 <?php
 defined('ABSPATH') || die();
-/** @var $this NextendSocialProvider */
+/** @var $this NextendSocialProviderAdmin */
 
-$settings = $this->settings;
+$provider = $this->getProvider();
+
+$settings = $provider->settings;
 ?>
 
 <div class="nsl-admin-sub-content">
-
-	<?php
+    <?php if (substr($provider->getLoginUrl(), 0, 8) !== 'https://'): ?>
+        <div class="error">
+            <p><?php _e('As of March 2018, Facebook allows HTTPS OAuth Redirects only. You must move your site to HTTPS in order to allow login with Facebook.', 'nextend-facebook-connect'); ?></p>
+            <p><a href="https://nextendweb.com/nextend-social-login-docs/facebook-api-changes/#enforce-https" target="_blank"><?php _e('Read more...', 'nextend-facebook-connect'); ?></a></p>
+        </div>
+    <?php endif; ?>
+    <?php
     $this->renderSettingsHeader();
     ?>
 
@@ -15,7 +22,7 @@ $settings = $this->settings;
 
 		<?php wp_nonce_field('nextend-social-login'); ?>
         <input type="hidden" name="action" value="nextend-social-login"/>
-        <input type="hidden" name="view" value="provider-<?php echo $this->getId(); ?>"/>
+        <input type="hidden" name="view" value="provider-<?php echo $provider->getId(); ?>"/>
         <input type="hidden" name="subview" value="settings"/>
         <input type="hidden" name="settings_saved" value="1"/>
         <input type="hidden" name="tested" id="tested" value="<?php echo esc_attr($settings->get('tested')); ?>"/>
@@ -29,7 +36,7 @@ $settings = $this->settings;
                         <input name="appid" type="text" id="appid"
                                value="<?php echo esc_attr($settings->get('appid')); ?>" class="regular-text">
                         <p class="description"
-                           id="tagline-appid"><?php printf(__('If you are not sure what is your %1$s, please head over to <a href="%2$s">Getting Started</a>', 'nextend-facebook-connect'), 'App ID', $this->getAdminUrl()); ?></p>
+                           id="tagline-appid"><?php printf(__('If you are not sure what is your %1$s, please head over to <a href="%2$s">Getting Started</a>', 'nextend-facebook-connect'), 'App ID', $this->getUrl()); ?></p>
                     </td>
                 </tr>
             <?php endif; ?>

@@ -152,6 +152,7 @@ class NextendSocialLogin {
 
         add_action('login_form_login', 'NextendSocialLogin::login_form_login');
         add_action('login_form_register', 'NextendSocialLogin::login_form_register');
+        add_action('login_form_link', 'NextendSocialLogin::login_form_link');
         add_action('bp_core_screen_signup', 'NextendSocialLogin::bp_login_form_register');
 
         add_action('login_form_unlink', 'NextendSocialLogin::login_form_unlink');
@@ -203,9 +204,10 @@ class NextendSocialLogin {
             add_action('wp_print_footer_scripts', 'NextendSocialLogin::scripts', 100);
             add_action('login_footer', 'NextendSocialLogin::scripts', 100);
 
-
-            add_filter('get_avatar', 'NextendSocialLogin::renderAvatar', 5, 6);
-            add_filter('bp_core_fetch_avatar', 'NextendSocialLogin::renderAvatarBP', 3, 5);
+            if (!defined('WPUA_VERSION')) {
+                add_filter('get_avatar', 'NextendSocialLogin::renderAvatar', 5, 6);
+                add_filter('bp_core_fetch_avatar', 'NextendSocialLogin::renderAvatarBP', 3, 5);
+            }
 
 
             add_shortcode('nextend_social_login', 'NextendSocialLogin::shortcode');
@@ -216,6 +218,23 @@ class NextendSocialLogin {
         require_once(NSL_PATH . '/widget.php');
 
         do_action('nsl_init');
+
+        /**
+         * Fix for Hide my WP plugin @see https://codecanyon.net/item/hide-my-wp-amazing-security-plugin-for-wordpress/4177158
+         */
+        if (class_exists('HideMyWP', false)) {
+            if (!empty($_REQUEST['loginSocial'])) {
+                global $HideMyWP;
+                $loginPath = '/wp-login.php';
+                if (is_object($HideMyWP) && substr($_SERVER['PHP_SELF'], -1 * strlen($loginPath))) {
+                    $login_query = $HideMyWP->opt('login_query');
+                    if (!$login_query) {
+                        $login_query = 'hide_my_wp';
+                    }
+                    $_GET[$login_query] = $HideMyWP->opt('admin_key');
+                }
+            }
+        }
     }
 
     public static function removeLoginFormAssets() {
@@ -407,6 +426,11 @@ class NextendSocialLogin {
 
     public static function bp_login_form_register() {
         self::$currentWPLoginAction = 'register-bp';
+        self::login_init();
+    }
+
+    public static function login_form_link() {
+        self::$currentWPLoginAction = 'link';
         self::login_init();
     }
 
@@ -759,20 +783,28 @@ class NextendSocialLogin {
 
         $currentUrl = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 
+        if (!self::isAllowedRedirectUrl($currentUrl)) {
+            return false;
+        }
+
+        return $currentUrl;
+    }
+
+    public static function isAllowedRedirectUrl($url) {
         $loginUrl = site_url('wp-login.php');
 
         // If the currentUrl is the loginUrl, then we should not return it for redirects
-        if (strpos($currentUrl, $loginUrl) === 0) {
+        if (strpos($url, $loginUrl) === 0) {
             return false;
         }
 
         $registerUrl = wp_registration_url();
         // If the currentUrl is the registerUrl, then we should not return it for redirects
-        if (strpos($currentUrl, $registerUrl) === 0) {
+        if (strpos($url, $registerUrl) === 0) {
             return false;
         }
 
-        return $currentUrl;
+        return true;
     }
 
     public static function get_template_part($file_name, $name = null) {

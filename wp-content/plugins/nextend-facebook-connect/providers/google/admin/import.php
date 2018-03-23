@@ -1,6 +1,8 @@
 <?php
 defined('ABSPATH') || die();
-/** @var $this NextendSocialProvider */
+/** @var $this NextendSocialProviderAdmin */
+
+$provider = $this->getProvider();
 ?>
 
 <div class="nsl-admin-sub-content">
@@ -13,7 +15,7 @@ defined('ABSPATH') || die();
         <li><?php printf(__('Visit %s.', 'nextend-facebook-connect'), '<a href="https://console.developers.google.com/apis/" target="_blank">https://console.developers.google.com/apis/</a>'); ?></li>
         <li><?php _e('If you have more projects, select the one where your app is.', 'nextend-facebook-connect'); ?></li>
         <li><?php _e('Click on Credentials at the left-hand menu then select your app.', 'nextend-facebook-connect'); ?></li>
-        <li><?php printf(__('Make sure that the "%1$s" field contains %2$s', 'nextend-facebook-connect'), 'Authorized redirect URIs', $this->getLoginUrl()); ?> </li>
+        <li><?php printf(__('Make sure that the "%1$s" field contains %2$s', 'nextend-facebook-connect'), 'Authorized redirect URIs', $provider->getLoginUrl()); ?> </li>
         <li><?php _e('Save your changes.', 'nextend-facebook-connect'); ?></li>
     </ol>
 
@@ -37,7 +39,7 @@ defined('ABSPATH') || die();
         <a href="<?php echo wp_nonce_url(add_query_arg(array(
             'action'   => 'nextend-social-login',
             'view'     => 'import',
-            'provider' => $this->getId()
+            'provider' => $provider->getId()
         ), admin_url('admin-post.php')), 'nextend-social-login'); ?>" class="button button-primary">
 			<?php _e('Import Configuration', 'nextend-facebook-connect'); ?>
         </a>

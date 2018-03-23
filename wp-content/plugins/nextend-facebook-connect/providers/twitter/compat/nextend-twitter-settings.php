@@ -114,7 +114,7 @@ if (!class_exists('NextendTwitterSettings')) {
                                         <ul>
                                             <li>
                                                 <a href="http://www.nextendweb.com/social-connect-plugins-for-wordpress.html"
-                                                   target="_blank"><?php _e('Check the realted <b>blog post</b>!', 'nextend-google-connect'); ?></a>
+                                                   target="_blank"><?php echo 'Check the related <b>blog post</b>!'; ?></a>
                                             </li>
                                             <li><br></li>
                                             <li>
@@ -284,7 +284,7 @@ if (!class_exists('NextendTwitterSettings')) {
         }
 
         function NextendTwitter_Menu() {
-            add_options_page(__('Nextend Twitter Connect'), __('Nextend Twitter Connect'), 'manage_options', 'nextend-twitter-connect', array(
+            add_options_page('Nextend Twitter Connect', 'Nextend Twitter Connect', 'manage_options', 'nextend-twitter-connect', array(
                 'NextendTwitterSettings',
                 'NextendTwitter_Options_Page'
             ));

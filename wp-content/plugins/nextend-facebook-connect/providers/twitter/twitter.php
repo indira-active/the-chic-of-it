@@ -111,9 +111,8 @@ class NextendSocialProviderTwitter extends NextendSocialProvider {
      * @param $key
      *
      * @return string
-     * @throws Exception
      */
-    protected function getAuthUserData($key) {
+    public function getAuthUserData($key) {
 
         switch ($key) {
             case 'id':
@@ -132,6 +131,8 @@ class NextendSocialProviderTwitter extends NextendSocialProvider {
     }
 
     public function syncProfile($user_id, $provider, $access_token) {
+
+        do_action('nsl_update_avatar', $this, $user_id, $this->authUserData['profile_image_url_https']);
         $this->saveUserData($user_id, 'profile_picture', $this->authUserData['profile_image_url_https']);
         $this->saveUserData($user_id, 'access_token', $access_token);
     }
@@ -193,10 +194,12 @@ class NextendSocialProviderTwitter extends NextendSocialProvider {
 
     public function adminDisplaySubView($subview) {
         if ($subview == 'import' && $this->settings->get('legacy') == 1) {
-            $this->renderAdmin('import', false);
-        } else {
-            parent::adminDisplaySubView($subview);
+            $this->admin->render('import', false);
+
+            return true;
         }
+
+        return parent::adminDisplaySubView($subview);
     }
 }
 

@@ -309,7 +309,7 @@ if (!class_exists('NextendFBSettings')) {
         }
 
         function NextendFB_Menu() {
-            add_options_page(__('Nextend FB Connect'), __('Nextend FB Connect'), 'manage_options', 'nextend-facebook-connect', array(
+            add_options_page('Nextend FB Connect', 'Nextend FB Connect', 'manage_options', 'nextend-facebook-connect', array(
                 'NextendFBSettings',
                 'NextendFB_Options_Page'
             ));

@@ -8,11 +8,13 @@
             $wrongOauthProviders[] = $provider;
         }
     }
+
     if (count($wrongOauthProviders) === 0) {
         echo '<div class="updated"><p>' . __('Every Oauth Redirect URI seems fine', 'nextend-facebook-connect') . '</p></div>';
 
         foreach (NextendSocialLogin::$enabledProviders AS $provider) {
-            $provider->renderOauthChangedInstruction();
+            $provider->getAdmin()
+                     ->renderOauthChangedInstruction();
         }
     } else {
         ?>
@@ -20,7 +22,8 @@
 
         <?php
         foreach ($wrongOauthProviders AS $provider) {
-            $provider->renderOauthChangedInstruction();
+            $provider->getAdmin()
+                     ->renderOauthChangedInstruction();
         }
         ?>
 

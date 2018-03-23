@@ -6,7 +6,7 @@ $settings = NextendSocialLogin::$settings;
     <table class="form-table">
     <tbody>
     <tr>
-        <th scope="row"><?php _e('Login form', 'nextend-facebook-connect'); ?></th>
+        <th scope="row"><?php _e('Login Form', 'nextend-facebook-connect'); ?></th>
         <td>
             <fieldset>
                 <label><input type="radio" name="show_login_form"
@@ -19,7 +19,7 @@ $settings = NextendSocialLogin::$settings;
         </td>
     </tr>
     <tr>
-        <th scope="row"><?php _e('Registration form', 'nextend-facebook-connect'); ?></th>
+        <th scope="row"><?php _e('Registration Form', 'nextend-facebook-connect'); ?></th>
         <td>
             <fieldset>
                 <label><input type="radio" name="show_registration_form"

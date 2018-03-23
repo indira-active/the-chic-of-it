@@ -1,8 +1,10 @@
 <?php
 defined('ABSPATH') || die();
-/** @var $this NextendSocialProvider */
+/** @var $this NextendSocialProviderAdmin */
 
-$settings = $this->settings;
+$provider = $this->getProvider();
+
+$settings = $provider->settings;
 
 $isPRO = apply_filters('nsl-pro', false);
 ?>
@@ -15,8 +17,8 @@ $isPRO = apply_filters('nsl-pro', false);
                     '#login_label': <?php echo wp_json_encode($settings->get('login_label', 'default')); ?>,
                     '#link_label': <?php echo wp_json_encode($settings->get('link_label', 'default')); ?>,
                     '#unlink_label': <?php echo wp_json_encode($settings->get('unlink_label', 'default')); ?>,
-                    '#custom_default_button': <?php echo wp_json_encode($this->getRawDefaultButton()); ?>,
-                    '#custom_icon_button': <?php echo wp_json_encode($this->getRawIconButton()); ?>
+                    '#custom_default_button': <?php echo wp_json_encode($provider->getRawDefaultButton()); ?>,
+                    '#custom_icon_button': <?php echo wp_json_encode($provider->getRawIconButton()); ?>
                 };
 
                 var $CodeMirror = jQuery(id).val(defaultButtonValues[id]).siblings('.CodeMirror').get(0);
@@ -62,7 +64,7 @@ $isPRO = apply_filters('nsl-pro', false);
 
 		<?php wp_nonce_field('nextend-social-login'); ?>
         <input type="hidden" name="action" value="nextend-social-login"/>
-        <input type="hidden" name="view" value="provider-<?php echo $this->getId(); ?>"/>
+        <input type="hidden" name="view" value="provider-<?php echo $provider->getId(); ?>"/>
         <input type="hidden" name="subview" value="buttons"/>
 
         <table class="form-table">
@@ -111,7 +113,7 @@ $isPRO = apply_filters('nsl-pro', false);
                     if (!empty($buttonTemplate)) {
                         $useCustom = true;
                     } else {
-                        $buttonTemplate = $this->getRawDefaultButton();
+                        $buttonTemplate = $provider->getRawDefaultButton();
                     }
                     ?>
                     <fieldset><label for="custom_default_button_enabled">
@@ -142,7 +144,7 @@ $isPRO = apply_filters('nsl-pro', false);
                         if (!empty($buttonTemplate)) {
                             $useCustom = true;
                         } else {
-                            $buttonTemplate = $this->getRawIconButton();
+                            $buttonTemplate = $provider->getRawIconButton();
                         }
                         ?>
                         <fieldset><label for="custom_icon_button_enabled">

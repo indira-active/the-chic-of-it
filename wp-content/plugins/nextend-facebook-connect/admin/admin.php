@@ -128,7 +128,8 @@ class NextendSocialLoginAdmin {
                                 NextendSocialLogin::enableProvider($_GET['provider']);
                             }
                             if ($_GET['view'] == 'sub-enable') {
-                                wp_redirect(NextendSocialLogin::$providers[$_GET['provider']]->getAdminUrl('settings'));
+                                wp_redirect(NextendSocialLogin::$providers[$_GET['provider']]->getAdmin()
+                                                                                             ->getUrl('settings'));
                                 exit;
                             }
 
@@ -143,7 +144,8 @@ class NextendSocialLoginAdmin {
                                 NextendSocialLogin::disableProvider($_GET['provider']);
                             }
                             if ($_GET['view'] == 'sub-disable') {
-                                wp_redirect(NextendSocialLogin::$providers[$_GET['provider']]->getAdminUrl('settings'));
+                                wp_redirect(NextendSocialLogin::$providers[$_GET['provider']]->getAdmin()
+                                                                                             ->getUrl('settings'));
                                 exit;
                             }
 
@@ -233,7 +235,8 @@ class NextendSocialLoginAdmin {
                 if (!empty($provider) && isset(NextendSocialLogin::$providers[$provider]) && NextendSocialLogin::$providers[$provider]->getState() == 'legacy') {
                     NextendSocialLogin::$providers[$provider]->import();
 
-                    wp_redirect(NextendSocialLogin::$providers[$provider]->getAdminUrl('settings'));
+                    wp_redirect(NextendSocialLogin::$providers[$provider]->getAdmin()
+                                                                         ->getUrl('settings'));
                     exit;
                 }
 
@@ -245,7 +248,8 @@ class NextendSocialLoginAdmin {
                     NextendSocialLogin::$providers[$providerID]->settings->update($_POST);
 
                     NextendSocialLoginAdminNotices::addSuccess(__('Settings saved.'));
-                    wp_redirect(NextendSocialLogin::$providers[$providerID]->getAdminUrl(isset($_POST['subview']) ? $_POST['subview'] : ''));
+                    wp_redirect(NextendSocialLogin::$providers[$providerID]->getAdmin()
+                                                                           ->getUrl(isset($_POST['subview']) ? $_POST['subview'] : ''));
                     exit;
                 }
             }

@@ -311,31 +311,31 @@ function new_twitter_request_email() {
     if (isset($_POST['user_email'])) {
         $user_email = $_POST['user_email'];
         if ($user_email == '') {
-            $errors->add('empty_email', __('<strong>ERROR</strong>: Please type your e-mail address.'));
+            $errors->add('empty_email', '<strong>ERROR</strong>: Please type your e-mail address.');
         } elseif (!is_email($user_email)) {
-            $errors->add('invalid_email', __('<strong>ERROR</strong>: The email address isn&#8217;t correct.'));
+            $errors->add('invalid_email', '<strong>ERROR</strong>: The email address isn&#8217;t correct.');
             $user_email = '';
         } elseif (email_exists($user_email)) {
-            $errors->add('email_exists', __('<strong>ERROR</strong>: This email is already registered, please choose another one.'));
+            $errors->add('email_exists', '<strong>ERROR</strong>: This email is already registered, please choose another one.');
         }
         if (isset($_POST['user_email']) && $errors->get_error_code() == '') {
             return $user_email;
         }
     }
 
-    login_header(__('Registration Form'), '<p class="message register">' . __('Please enter your email address to register!') . '</p>', $errors);
+    login_header('Registration Form', '<p class="message register">' . 'Please enter your email address to register!' . '</p>', $errors);
     ?>
     <form name="registerform" id="registerform"
           action="<?php echo esc_url(site_url('wp-login.php?loginTwitter=1', 'login_post')); ?>" method="post">
         <p>
-            <label for="user_email"><?php _e('E-mail') ?><br/>
+            <label for="user_email"><?php echo 'E-mail' ?><br/>
                 <input type="email" name="user_email" id="user_email" class="input"
                        value="<?php echo esc_attr(stripslashes($user_email)); ?>" size="25" tabindex="20"/></label>
         </p>
-        <p id="reg_passmail"><?php _e('A password will be e-mailed to you.') ?></p>
+        <p id="reg_passmail"><?php echo 'A password will be e-mailed to you.' ?></p>
         <br class="clear"/>
         <p class="submit"><input type="submit" name="wp-submit" id="wp-submit" class="button-primary"
-                                 value="<?php esc_attr_e('Register'); ?>" tabindex="100"/></p>
+                                 value="<?php echo esc_attr('Register'); ?>" tabindex="100"/></p>
     </form>
     <?php
     login_footer('user_login');
@@ -411,7 +411,7 @@ function new_add_twitter_login_form() {
                     socialLogins = $(
                         '<div class="newsociallogins" style="text-align: center;"><div style="clear:both;"></div></div>');
                     if (loginForm.find('input').length > 0) {
-                        loginForm.prepend("<h3 style='text-align:center;'><?php _e('OR'); ?></h3>");
+                        loginForm.prepend("<h3 style='text-align:center;'><?php echo 'OR'; ?></h3>");
                     }
                     loginForm.prepend(socialLogins);
                 }
@@ -669,8 +669,8 @@ if ($shake_error_codes && $wp_error->get_error_code() && in_array($wp_error->get
             $login_header_url   = network_home_url();
             $login_header_title = $current_site->site_name;
         } else {
-            $login_header_url   = __('http://wordpress.org/');
-            $login_header_title = __('Powered by WordPress');
+            $login_header_url   = 'http://wordpress.org/';
+            $login_header_title = 'Powered by WordPress';
         }
 
         $login_header_url   = apply_filters('login_headerurl', $login_header_url);
@@ -746,7 +746,7 @@ if ($shake_error_codes && $wp_error->get_error_code() && in_array($wp_error->get
         // Don't allow interim logins to navigate away from the page.
     if (!$interim_login): ?>
         <p id="backtoblog"><a href="<?php echo esc_url(home_url('/')); ?>"
-                              title="<?php esc_attr_e('Are you lost?'); ?>"><?php printf(__('&larr; Back to %s'), get_bloginfo('title', 'display')); ?></a>
+                              title="<?php echo esc_attr('Are you lost?'); ?>"><?php printf('&larr; Back to %s', get_bloginfo('title', 'display')); ?></a>
         </p>
 	<?php endif; ?>
 

@@ -1,6 +1,8 @@
 <?php
 defined('ABSPATH') || die();
-/** @var $this NextendSocialProvider */
+/** @var $this NextendSocialProviderAdmin */
+
+$provider = $this->getProvider();
 ?>
 
 <div class="nsl-admin-sub-content">
@@ -13,7 +15,7 @@ defined('ABSPATH') || die();
         <li><?php printf(__('Visit %s.', 'nextend-facebook-connect'), '<a href="https://apps.twitter.com/" target="_blank">https://apps.twitter.com/</a>'); ?></li>
         <li><?php _e('Select your app.', 'nextend-facebook-connect'); ?></li>
         <li><?php _e('Go to the Settings tab.', 'nextend-facebook-connect'); ?></li>
-        <li><?php printf(__('Make sure that the "%1$s" field contains %2$s', 'nextend-facebook-connect'), 'Callback URL', $this->getLoginUrl()); ?> </li>
+        <li><?php printf(__('Make sure that the "%1$s" field contains %2$s', 'nextend-facebook-connect'), 'Callback URL', $provider->getLoginUrl()); ?> </li>
         <li><?php _e('Save your changes.', 'nextend-facebook-connect'); ?></li>
     </ol>
 
@@ -38,7 +40,7 @@ defined('ABSPATH') || die();
         <a href="<?php echo wp_nonce_url(add_query_arg(array(
             'action'   => 'nextend-social-login',
             'view'     => 'import',
-            'provider' => $this->getId()
+            'provider' => $provider->getId()
         ), admin_url('admin-post.php')), 'nextend-social-login'); ?>" class="button button-primary">
 			<?php _e('Import Configuration', 'nextend-facebook-connect'); ?>
         </a>

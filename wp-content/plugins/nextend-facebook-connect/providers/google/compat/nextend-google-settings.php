@@ -304,7 +304,7 @@ if (!class_exists('NextendGoogleSettings')) {
         }
 
         function NextendGoogle_Menu() {
-            add_options_page(__('Nextend Google Connect'), __('Nextend Google Connect'), 'manage_options', 'nextend-google-connect', array(
+            add_options_page('Nextend Google Connect', 'Nextend Google Connect', 'manage_options', 'nextend-google-connect', array(
                 'NextendGoogleSettings',
                 'NextendGoogle_Options_Page'
             ));

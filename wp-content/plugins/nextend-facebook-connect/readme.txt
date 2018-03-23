@@ -112,6 +112,10 @@ Unfortunately, currently there are no BuddyPress specific settings. However your
 
 == Changelog ==
 
+= 3.0.5 =
+* Session cookie name changed to properly work on Pantheon hosting. It can be changed with Can be changed with nsl_session_name filter and NSL_SESSION_NAME constant.
+* Fix for Hide my WP plugin @see https://codecanyon.net/item/hide-my-wp-amazing-security-plugin-for-wordpress/4177158
+
 = 3.0.4 =
 * Remove whitespaces from username
 * Provider test process renamed to "Verify Settings"

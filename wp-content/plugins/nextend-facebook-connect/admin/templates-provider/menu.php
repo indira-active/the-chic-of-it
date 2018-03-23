@@ -1,15 +1,15 @@
 <?php
 defined('ABSPATH') || die();
-/** @var $this NextendSocialProvider */
+/** @var $this NextendSocialProviderAdmin */
 /** @var $view string */
 ?>
 <div class="nsl-admin-sub-nav-bar">
-    <a href="<?php echo $this->getAdminUrl(); ?>"
+    <a href="<?php echo $this->getUrl(); ?>"
        class="nsl-admin-nav-tab<?php if ($view === 'getting-started'): ?> nsl-admin-nav-tab-active<?php endif; ?>"><?php _e('Getting Started', 'nextend-facebook-connect'); ?></a>
-    <a href="<?php echo $this->getAdminUrl('settings'); ?>"
+    <a href="<?php echo $this->getUrl('settings'); ?>"
        class="nsl-admin-nav-tab<?php if ($view === 'settings'): ?> nsl-admin-nav-tab-active<?php endif; ?>"><?php _e('Settings', 'nextend-facebook-connect'); ?></a>
-    <a href="<?php echo $this->getAdminUrl('buttons'); ?>"
+    <a href="<?php echo $this->getUrl('buttons'); ?>"
        class="nsl-admin-nav-tab<?php if ($view === 'buttons'): ?> nsl-admin-nav-tab-active<?php endif; ?>"><?php _e('Buttons', 'nextend-facebook-connect'); ?></a>
-    <a href="<?php echo $this->getAdminUrl('usage'); ?>"
+    <a href="<?php echo $this->getUrl('usage'); ?>"
        class="nsl-admin-nav-tab<?php if ($view === 'usage'): ?> nsl-admin-nav-tab-active<?php endif; ?>"><?php _e('Usage', 'nextend-facebook-connect'); ?></a>
 </div>

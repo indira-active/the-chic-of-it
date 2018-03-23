@@ -1,8 +1,10 @@
 <?php
 defined('ABSPATH') || die();
-/** @var $this NextendSocialProvider */
+/** @var $this NextendSocialProviderAdmin */
 
-$settings = $this->settings;
+$provider = $this->getProvider();
+
+$settings = $provider->settings;
 
 $isPRO = apply_filters('nsl-pro', false);
 

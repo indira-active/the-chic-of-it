@@ -1,6 +1,8 @@
 <?php
 defined('ABSPATH') || die();
-/** @var $this NextendSocialProvider */
+/** @var $this NextendSocialProviderAdmin */
+
+$provider = $this->getProvider();
 ?>
 
 <div class="nsl-admin-sub-content">
@@ -15,13 +17,13 @@ defined('ABSPATH') || die();
         <li><?php printf(__('Log in with your %s credentials if you are not logged in', 'nextend-facebook-connect'), 'Twitter'); ?></li>
         <li><?php _e('Click on the "Create New App" button', 'nextend-facebook-connect'); ?></li>
         <li><?php printf(__('Fill the name and description fields. Then enter your site\'s URL to the Website field: <b>%s</b>', 'nextend-facebook-connect'), site_url()); ?></li>
-        <li><?php printf(__('Add the following URL to the "Callback URL" field: <b>%s</b>', 'nextend-facebook-connect'), $this->getLoginUrl()); ?></li>
+        <li><?php printf(__('Add the following URL to the "Callback URL" field: <b>%s</b>', 'nextend-facebook-connect'), $provider->getLoginUrl()); ?></li>
         <li><?php _e('Accept the Twitter Developer Agreement', 'nextend-facebook-connect'); ?></li>
         <li><?php _e('Create your application by clicking on the Create your Twitter application button', 'nextend-facebook-connect'); ?></li>
         <li><?php _e('Go to the Keys and Access Tokens tab and find the Consumer Key and Secret', 'nextend-facebook-connect'); ?></li>
     </ol>
 
-    <a href="<?php echo $this->getAdminUrl('settings'); ?>"
+    <a href="<?php echo $this->getUrl('settings'); ?>"
        class="button button-primary"><?php printf(__('I am done setting up my %s', 'nextend-facebook-connect'), 'Twitter App'); ?></a>
 
     <br>

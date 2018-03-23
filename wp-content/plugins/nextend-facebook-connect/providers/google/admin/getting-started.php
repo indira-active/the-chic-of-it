@@ -1,6 +1,8 @@
 <?php
 defined('ABSPATH') || die();
-/** @var $this NextendSocialProvider */
+/** @var $this NextendSocialProviderAdmin */
+
+$provider = $this->getProvider();
 ?>
 
 <div class="nsl-admin-sub-content">
@@ -21,12 +23,12 @@ defined('ABSPATH') || die();
         <li><?php _e('Go back to the Credentials tab and locate the small box at the middle. Click on the blue "Create credentials" button. Chose the "OAuth client ID" from the dropdown list.', 'nextend-facebook-connect'); ?></li>
         <li><?php _e('Your application type should be "Web application"', 'nextend-facebook-connect'); ?></li>
         <li><?php _e('Name your application', 'nextend-facebook-connect'); ?></li>
-        <li><?php printf(__('Add the following URL to the "Authorised redirect URIs" field: <b>%s</b>', 'nextend-facebook-connect'), $this->getLoginUrl()); ?></li>
+        <li><?php printf(__('Add the following URL to the "Authorised redirect URIs" field: <b>%s</b>', 'nextend-facebook-connect'), $provider->getLoginUrl()); ?></li>
         <li><?php _e('Click on the Create button', 'nextend-facebook-connect'); ?></li>
         <li><?php _e('A modal should pop up with your credentials. If that doesn\'t happen, go to the Credentials in the left hand menu and select your app by clicking on its name and you\'ll be able to copy-paste the Client ID and Client Secret from there.', 'nextend-facebook-connect'); ?></li>
     </ol>
 
-    <a href="<?php echo $this->getAdminUrl('settings'); ?>"
+    <a href="<?php echo $this->getUrl('settings'); ?>"
        class="button button-primary"><?php printf(__('I am done setting up my %s', 'nextend-facebook-connect'), 'Google App'); ?></a>
 
     <br>

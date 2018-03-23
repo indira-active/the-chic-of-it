@@ -3,4 +3,6 @@
 
 $provider = NextendSocialLogin::$providers[$currentProvider];
 
-$provider->adminSettingsForm();
+$admin = $provider->getAdmin();
+
+$admin->settingsForm();

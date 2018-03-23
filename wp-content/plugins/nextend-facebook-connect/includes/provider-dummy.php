@@ -15,6 +15,9 @@ abstract class NextendSocialProviderDummy {
     /** @var NextendSocialLoginSettings */
     public $settings;
 
+    /** @var NextendSocialProviderAdmin */
+    protected $admin = null;
+
     public function needPro() {
         return true;
     }
@@ -53,13 +56,6 @@ abstract class NextendSocialProviderDummy {
 
     }
 
-    public function adminSettingsForm() {
-    }
-
-    public function getAdminUrl($subview = '') {
-        return NextendSocialLoginAdmin::getAdminUrl('provider-' . $this->getId());
-    }
-
     public function getState() {
         return 'pro-only';
     }
@@ -91,6 +87,30 @@ abstract class NextendSocialProviderDummy {
      */
     public function getPopupHeight() {
         return $this->popupHeight;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPath() {
+        return $this->path;
+    }
+
+    /**
+     * @return NextendSocialProviderAdmin
+     */
+    public function getAdmin() {
+        return $this->admin;
+    }
+
+    /**
+     * @param string $subview
+     *
+     * @return bool
+     */
+    public function adminDisplaySubView($subview) {
+
+        return false;
     }
 
 }

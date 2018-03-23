@@ -349,7 +349,7 @@ function new_add_google_login_form() {
                     socialLogins = $(
                         '<div class="newsociallogins" style="text-align: center;"><div style="clear:both;"></div></div>');
                     if (loginForm.find('input').length > 0) {
-                        loginForm.prepend("<h3 style='text-align:center;'><?php _e('OR'); ?></h3>");
+                        loginForm.prepend("<h3 style='text-align:center;'><?php echo 'OR'; ?></h3>");
                     }
                     loginForm.prepend(socialLogins);
                 }

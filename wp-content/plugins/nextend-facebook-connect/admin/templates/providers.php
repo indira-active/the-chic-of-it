@@ -1,7 +1,6 @@
 <?php
 wp_enqueue_script('jquery-ui-sortable');
 ?>
-
 <div class="nsl-dashboard-providers-container">
     <div class="nsl-dashboard-providers">
         <?php
@@ -12,7 +11,8 @@ wp_enqueue_script('jquery-ui-sortable');
 
         <?php foreach (NextendSocialLogin::$providers AS $provider): ?>
             <?php
-            $state = $provider->getState();
+            $state         = $provider->getState();
+            $providerAdmin = $provider->getAdmin();
             ?>
 
             <div class="nsl-dashboard-provider" data-provider="<?php echo $provider->getId(); ?>"
@@ -60,14 +60,14 @@ wp_enqueue_script('jquery-ui-sortable');
                             break;
                         case 'not-configured':
                             ?>
-                            <a href="<?php echo $provider->getAdminUrl(); ?>" class="button button-secondary">
+                            <a href="<?php echo $providerAdmin->getUrl(); ?>" class="button button-secondary">
 								<?php _e('Getting Started', 'nextend-facebook-connect'); ?>
                             </a>
                             <?php
                             break;
                         case 'not-tested':
                             ?>
-                            <a href="<?php echo $provider->getAdminUrl('settings'); ?>"
+                            <a href="<?php echo $providerAdmin->getUrl('settings'); ?>"
                                class="button button-secondary">
 								<?php _e('Verify Settings', 'nextend-facebook-connect'); ?>
                             </a>
@@ -79,7 +79,7 @@ wp_enqueue_script('jquery-ui-sortable');
                                class="button button-primary">
 								<?php _e('Enable', 'nextend-facebook-connect'); ?>
                             </a>
-                            <a href="<?php echo $provider->getAdminUrl('settings'); ?>"
+                            <a href="<?php echo $providerAdmin->getUrl('settings'); ?>"
                                class="button button-secondary">
 								<?php _e('Settings', 'nextend-facebook-connect'); ?>
                             </a>
@@ -91,7 +91,7 @@ wp_enqueue_script('jquery-ui-sortable');
                                class="button button-secondary">
 								<?php _e('Disable', 'nextend-facebook-connect'); ?>
                             </a>
-                            <a href="<?php echo $provider->getAdminUrl('settings'); ?>"
+                            <a href="<?php echo $providerAdmin->getUrl('settings'); ?>"
                                class="button button-secondary">
 								<?php _e('Settings', 'nextend-facebook-connect'); ?>
                             </a>
@@ -99,7 +99,7 @@ wp_enqueue_script('jquery-ui-sortable');
                             break;
                         case 'legacy':
                             ?>
-                            <a href="<?php echo $provider->getAdminUrl('import'); ?>" class="button button-primary">
+                            <a href="<?php echo $providerAdmin->getUrl('import'); ?>" class="button button-primary">
 								<?php _e('Import', 'nextend-facebook-connect'); ?>
                             </a>
                             <?php

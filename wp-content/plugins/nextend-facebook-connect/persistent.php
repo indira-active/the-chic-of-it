@@ -1,16 +1,32 @@
 <?php
 
+add_action('plugins_loaded', 'NextendSocialLoginPersistentAnonymous::plugins_loaded');
+
 class NextendSocialLoginPersistentAnonymous {
 
+    /**
+     * @var string name of the cookie. Can be changed with nsl_session_name filter and NSL_SESSION_NAME constant.
+     *
+     * @see https://pantheon.io/docs/caching-advanced-topics/
+     */
+    private static $sessionName = 'SESSnsl';
+
     private static $verifiedSession = false;
+
+    public static function plugins_loaded() {
+        if (defined('NSL_SESSION_NAME')) {
+            self::$sessionName = NSL_SESSION_NAME;
+        }
+        self::$sessionName = apply_filters('nsl_session_name', self::$sessionName);
+    }
 
     private static function getSessionID($mustCreate = false) {
         if (self::$verifiedSession !== false) {
             return self::$verifiedSession;
         }
-        if (isset($_COOKIE['nsl_session'])) {
-            if (get_site_transient('n_' . $_COOKIE['nsl_session']) !== false) {
-                self::$verifiedSession = $_COOKIE['nsl_session'];
+        if (isset($_COOKIE[self::$sessionName])) {
+            if (get_site_transient('n_' . $_COOKIE[self::$sessionName]) !== false) {
+                self::$verifiedSession = $_COOKIE[self::$sessionName];
 
                 return self::$verifiedSession;
             }
@@ -18,7 +34,7 @@ class NextendSocialLoginPersistentAnonymous {
         if ($mustCreate) {
             self::$verifiedSession = uniqid('nsl', true);
 
-            self::setcookie('nsl_session', self::$verifiedSession, time() + DAY_IN_SECONDS, apply_filters('nsl_session_use_secure_cookie', false));
+            self::setcookie(self::$sessionName, self::$verifiedSession, time() + DAY_IN_SECONDS, apply_filters('nsl_session_use_secure_cookie', false));
             set_site_transient('n_' . self::$verifiedSession, 1, 3600);
 
             return self::$verifiedSession;
@@ -53,7 +69,7 @@ class NextendSocialLoginPersistentAnonymous {
     public static function destroy() {
         $sessionID = self::getSessionID();
         if ($sessionID) {
-            self::setcookie('nsl_session', $sessionID, time() - YEAR_IN_SECONDS, apply_filters('nsl_session_use_secure_cookie', false));
+            self::setcookie(self::$sessionName, $sessionID, time() - YEAR_IN_SECONDS, apply_filters('nsl_session_use_secure_cookie', false));
 
             add_action('shutdown', 'NextendSocialLoginPersistentAnonymous::destroy_site_transient');
         }

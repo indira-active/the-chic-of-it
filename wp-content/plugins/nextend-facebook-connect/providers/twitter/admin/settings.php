@@ -1,8 +1,10 @@
 <?php
 defined('ABSPATH') || die();
-/** @var $this NextendSocialProvider */
+/** @var $this NextendSocialProviderAdmin */
 
-$settings = $this->settings;
+$provider = $this->getProvider();
+
+$settings = $provider->settings;
 ?>
 
 <div class="nsl-admin-sub-content">
@@ -14,7 +16,7 @@ $settings = $this->settings;
 
 		<?php wp_nonce_field('nextend-social-login'); ?>
         <input type="hidden" name="action" value="nextend-social-login"/>
-        <input type="hidden" name="view" value="provider-<?php echo $this->getId(); ?>"/>
+        <input type="hidden" name="view" value="provider-<?php echo $provider->getId(); ?>"/>
         <input type="hidden" name="subview" value="settings"/>
         <input type="hidden" name="settings_saved" value="1"/>
         <input type="hidden" name="tested" id="tested" value="<?php echo esc_attr($settings->get('tested')); ?>"/>
@@ -28,7 +30,7 @@ $settings = $this->settings;
                     <input name="consumer_key" type="text" id="consumer_key"
                            value="<?php echo esc_attr($settings->get('consumer_key')); ?>" class="regular-text">
                     <p class="description"
-                       id="tagline-consumer_key"><?php printf(__('If you are not sure what is your %1$s, please head over to <a href="%2$s">Getting Started</a>', 'nextend-facebook-connect'), 'Consumer Key', $this->getAdminUrl()); ?></p>
+                       id="tagline-consumer_key"><?php printf(__('If you are not sure what is your %1$s, please head over to <a href="%2$s">Getting Started</a>', 'nextend-facebook-connect'), 'Consumer Key', $this->getUrl()); ?></p>
                 </td>
             </tr>
             <tr>
