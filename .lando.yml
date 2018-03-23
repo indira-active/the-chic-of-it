@@ -1,0 +1,21 @@
+name: indira-active
+recipe: pantheon
+config:
+  framework: wordpress
+  site: indira-active
+  id: e3a6283f-9353-4cda-b8d1-2b3358620a3d
+services:
+  node:
+    type: node:6.11
+    globals:
+      gulp-cli: "latest"
+    overrides:
+      services:
+        ports: [3000:3000]
+tooling:
+  node:
+    service: node
+  npm:
+    service: node
+  gulp:
+    service: node
