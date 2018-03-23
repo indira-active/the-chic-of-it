@@ -174,7 +174,10 @@ require_once(ABSPATH . 'wp-settings.php');
 if ( isset( $_ENV['PANTHEON_ENVIRONMENT'] ) && php_sapi_name() != 'cli' ) {
 
 	// redirect to https://$primary_domain in the Live environment
-	if ( $_ENV['PANTHEON_ENVIRONMENT'] === 'live' ) {
+    if ( $_ENV['PANTHEON_ENVIRONMENT'] === 'lando' ) {
+        return;
+    }
+    elseif ( $_ENV['PANTHEON_ENVIRONMENT'] === 'live' ) {
 		$primary_domain = 'blog.indiraactive.com';
 	} else {
 		$primary_domain = $_SERVER['HTTP_HOST'];
