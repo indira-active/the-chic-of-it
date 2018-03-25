@@ -30,11 +30,11 @@ class IA_Footer {
 	public static function remove_filters() {
         remove_filter( 'genesis_footer_creds_text', 'refined_footer_creds_text' );
     }
-    
+
 
     /**
      * Add custom footer creds text
-     * 
+     *
      * @since 1.0.0
      */
     public static function add_footer_creds( $creds ) {

@@ -58,7 +58,6 @@ final class Indira_Active {
 			self::$instance = new Indira_Active;
 			self::$instance->constants();
 			self::$instance->includes();
-			// self::$instance->objects();
 
 			add_action( 'wp_enqueue_scripts', array( self::$instance, 'enqueue_scripts'         ), 20     );
 			add_filter( 'single_template'   , array( self::$instance, 'maybe_override_template' ), 100, 1 );
@@ -106,17 +105,6 @@ final class Indira_Active {
 		foreach ( $includes as $include ) {
 			require_once IA_PLUGIN_DIR . 'includes/' . $include . '.php';
 		}
-	}
-
-
-	/**
-	 * Setup objects
-	 *
-	 * @since 1.0.0
-	 */
-	public function objects() {
-		// $this->eh        = new IA_Eh;
-		do_action( 'indira_loaded' );
 	}
 
 
@@ -203,6 +191,3 @@ function IA() {
 
 // SPINSIES
 IA();
-
-
-remove_filter( 'wp_nav_menu_items', 'refined_primary_nav_extras', 10 );
