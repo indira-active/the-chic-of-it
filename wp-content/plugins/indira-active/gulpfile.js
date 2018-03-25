@@ -6,9 +6,11 @@
  */
 
 /**
- * SET BROSWERSYNC URL
+ * Set Browsersync domain/url
  */
-var bs_url = "http://indira-active.dev/";
+var bs_domain = "indira-active.lndo.site";
+var bs_url = "http://" + bs_domain + "/";
+
 
 /**
  * Grab gulp packages
@@ -110,7 +112,8 @@ gulp.task('browsersync', function() {
 
     browserSync.init(files, {
 	    proxy: bs_url,
-		  open: false,
+      host: bs_domain,
+      open: false,
     });
 
     gulp.watch('./assets/scss/**/*.scss', ['styles']);
