@@ -174,14 +174,15 @@ require_once(ABSPATH . 'wp-settings.php');
 if ( isset( $_ENV['PANTHEON_ENVIRONMENT'] ) && php_sapi_name() != 'cli' ) {
 
 	// redirect to https://$primary_domain in the Live environment
- //    if ( $_ENV['PANTHEON_ENVIRONMENT'] === 'lando' ) {
- //        return;
- //    }
- //    elseif ( $_ENV['PANTHEON_ENVIRONMENT'] === 'live' ) {
-	// 	$primary_domain = 'blog.indiraactive.com';
-	// } else {
-	// 	$primary_domain = $_SERVER['HTTP_HOST'];
-	// }
+    if ( $_ENV['PANTHEON_ENVIRONMENT'] === 'lando' ) {
+        return;
+    }
+    elseif ( $_ENV['PANTHEON_ENVIRONMENT'] === 'live' ) {
+		  //$primary_domain = 'blog.indiraactive.com';
+      return;
+	} else {
+		  $primary_domain = $_SERVER['HTTP_HOST'];
+	}
 
 	// redirect to HTTPS on every Pantheon environment.
 	if ( $_SERVER['HTTP_HOST'] != $primary_domain
