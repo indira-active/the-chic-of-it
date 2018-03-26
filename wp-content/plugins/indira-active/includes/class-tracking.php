@@ -17,8 +17,9 @@ class IA_Tracking {
 	 * @since 1.0.0
 	 */
 	function __construct() {
-        add_action( 'wp_head'   , array( __CLASS__ , 'add_head' ) );
-        add_action( 'wp_footer' , array( __CLASS__ , 'add_foot' ) );
+        add_action( 'wp_head'        , array( __CLASS__ , 'add_head' ) );
+        add_action( 'genesis_before' , array( __CLASS__ , 'add_body' ) );
+        add_action( 'wp_footer'      , array( __CLASS__ , 'add_foot' ) );
     }
 
 
@@ -36,6 +37,18 @@ class IA_Tracking {
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-WHKQ7X8');</script>
         <!-- End Google Tag Manager -->
+
+    <?php }
+
+
+	/**
+	 * Add just-after <body> scripts
+	 *
+	 * @since 1.0.0
+	 */
+	public static function add_body() { ?>
+
+		<!-- Hi -->
 
     <?php }
 
