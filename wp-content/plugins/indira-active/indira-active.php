@@ -96,6 +96,7 @@ final class Indira_Active {
 
 		// load every time
 		$includes = array(
+			'class-tracking',
 			'class-header',
 			'class-footer',
 			'functions',
