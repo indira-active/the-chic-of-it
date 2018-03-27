@@ -28,7 +28,7 @@
 
 	@media only screen and (max-width: 1200px) {
 		padding-left: 10px;
-		
+
 		.widget-area {
 			width: 300px;
 		}
@@ -54,11 +54,12 @@
 
 .title-area {
 	padding: 10px 0;
+	width: 300px;
 }
 
 .site-title {
-	font-size: 22px;
-	letter-spacing: 20px;
+	font-size: 21px;
+	letter-spacing: 8px;
 	font-weight: 400;
 
 	a {
@@ -67,10 +68,12 @@
 }
 
 .site-description {
+	margin-right: -5px;
 	color: $pink;
-	font-size: 12px;
-	letter-spacing: 7.25px;
-	line-height: 18px;
+	font-size: 13px;
+	letter-spacing: 4.5px;
+	line-height: 19px;
+	text-transform: uppercase;
 }
 
 
@@ -81,7 +84,7 @@
 		background: $gray-dark;
 		color: $white;
 		font-size: 15px;
-		
+
 		// icon
 		&:before {
 			position: relative;
