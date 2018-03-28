@@ -2,7 +2,7 @@
 include_once dirname(__FILE__) . '/Utilities.php';
 include_once dirname(__FILE__) . '/Response.php';
 require_once dirname(__FILE__) . '/includes/lib/encryption.php';
-
+require_once dirname( __FILE__ ) . '/includes/lib/mo-options-enum.php';
 class mo_login_wid extends WP_Widget {
 	public function __construct() {
 		$identityName = get_option('saml_identity_name');
@@ -79,6 +79,8 @@ class mo_login_wid extends WP_Widget {
 
 		?>
 
+		
+
 			</ul>
 		</form>
 		<?php
@@ -103,12 +105,25 @@ function mo_login_validate(){
 	if(isset($_REQUEST['option']) && $_REQUEST['option'] == 'mosaml_metadata'){
 		miniorange_generate_metadata();
 	}
-	if((isset($_REQUEST['option']) && $_REQUEST['option'] == 'saml_user_login') || (isset($_REQUEST['option']) && $_REQUEST['option'] == 'testConfig')){
-		if(mo_saml_is_sp_configured()) {
+	if((isset($_REQUEST['option']) && $_REQUEST['option'] == 'saml_user_login') || (isset($_REQUEST['option']) && $_REQUEST['option'] == 'testConfig') || (isset($_REQUEST['option']) && $_REQUEST['option'] == 'getsamlrequest')|| (isset($_REQUEST['option']) && $_REQUEST['option'] == 'getsamlresponse')){
+
+		if($_REQUEST['option'] == 'testConfig' || $_REQUEST['option'] == 'getsamlrequest' || $_REQUEST['option'] == 'getsamlresponse'){
+			if(!is_user_logged_in()){
+				return;
+			}else if(is_user_logged_in() && !current_user_can('manage_options')){
+				return;
+			}
+		}
+		
+	    if(mo_saml_is_sp_configured()) {
 			if($_REQUEST['option'] == 'testConfig')
 				$sendRelayState = 'testValidate';
 			else if ( isset( $_REQUEST['redirect_to']) )
 				$sendRelayState = $_REQUEST['redirect_to'];
+			else if($_REQUEST['option'] == 'getsamlrequest')
+				$sendRelayState = 'displaySAMLRequest';
+			else if($_REQUEST['option'] == 'getsamlresponse')
+				$sendRelayState = 'displaySAMLResponse';
 			else
 				$sendRelayState = saml_get_current_page_url();
 			
@@ -119,7 +134,12 @@ function mo_login_validate(){
 			$acsUrl = site_url()."/";
 			$issuer = site_url().'/wp-content/plugins/miniorange-saml-20-single-sign-on/';
 			$samlRequest = Utilities::createAuthnRequest($acsUrl, $issuer, $force_authn);
+		    $sp_entity_id = get_option('mo_saml_sp_entity_id');
+		    // display SAML request if view SAML request is clicked.
+		    if( $sendRelayState == 'displaySAMLRequest' )
+			    mo_saml_show_SAML_log(Utilities::createSAMLRequest($acsUrl, $sp_entity_id, $ssoUrl, $force_authn),$sendRelayState);
 			$redirect = $ssoUrl;
+
 			if (strpos($ssoUrl,'?') !== false) {
 				$redirect .= '&';
 			} else {
@@ -166,6 +186,9 @@ function mo_login_validate(){
 		if(array_key_exists(7, $statusArray)){
 			$status = $statusArray[7];
 		}
+		if($relayState=='displaySAMLResponse'){
+			mo_saml_show_SAML_log($samlResponse,$relayState);
+		}
 		
 		if($status!="Success"){
 			show_status_error($status,$relayState,$StatusMessage);
@@ -180,17 +203,17 @@ function mo_login_validate(){
 		if(empty($assertionSignatureData) && empty($responseSignatureData) ) {
 
 			if($relayState=='testValidate'){
-				
+
+				$Error_message=mo_options_error_constants::Error_no_certificate;
+				$Cause_message = mo_options_error_constants::Cause_no_certificate;
 			echo '<div style="font-family:Calibri;padding:0 3%;">
 			<div style="color: #a94442;background-color: #f2dede;padding: 15px;margin-bottom: 20px;text-align:center;border:1px solid #E6B3B2;font-size:18pt;"> ERROR</div>
-			<div style="color: #a94442;font-size:14pt; margin-bottom:20px;"><p><strong>Error: </strong>Unable to find a certificate .</p>
+			<div style="color: #a94442;font-size:14pt; margin-bottom:20px;"><p><strong>Error:'.$Error_message.' </strong></p>
 			<p>Please contact your administrator and report the following error:</p>
-			<p><strong>Possible Cause: </strong>No signature found in SAML Response or Assertion. Please sign at least one of them.</p>
+			<p><strong>Possible Cause: '.$Cause_message.'</strong></p>
 			
-			</div>
-			<div style="margin:3%;display:block;text-align:center;">
-			<form action="index.php">
-			<div style="margin:3%;display:block;text-align:center;"><input style="padding:1%;width:100px;background: #0091CD none repeat scroll 0% 0%;cursor: pointer;font-size:15px;border-width: 1px;border-style: solid;border-radius: 3px;white-space: nowrap;box-sizing: border-box;border-color: #0073AA;box-shadow: 0px 1px 0px rgba(120, 200, 230, 0.6) inset;color: #FFF;"type="button" value="Done" onClick="self.close();"></div>';
+			</div></div>';
+			mo_saml_download_logs($Error_message,$Cause_message);
 
 			exit;
 			}
@@ -248,20 +271,21 @@ function mo_login_validate(){
 
 		if(!$validSignature) {
 			if($relayState=='testValidate'){
+
+				$Error_message=mo_options_error_constants::Error_wrong_certificate;
+				$Cause_message = mo_options_error_constants::Cause_wrong_certificate;
 				$pem = "-----BEGIN CERTIFICATE-----<br>" .
 					chunk_split($saml_required_certificate, 64) .
 					"<br>-----END CERTIFICATE-----";
 				echo '<div style="font-family:Calibri;padding:0 3%;">';
 			echo '<div style="color: #a94442;background-color: #f2dede;padding: 15px;margin-bottom: 20px;text-align:center;border:1px solid #E6B3B2;font-size:18pt;"> ERROR</div>
-			<div style="color: #a94442;font-size:14pt; margin-bottom:20px;"><p><strong>Error: </strong>Unable to find a certificate matching the configured fingerprint.</p>
+			<div style="color: #a94442;font-size:14pt; margin-bottom:20px;"><p><strong>Error:'.$Error_message.' </strong></p>
 			<p>Please contact your administrator and report the following error:</p>
-			<p><strong>Possible Cause: </strong>\'X.509 Certificate\' field in plugin does not match the certificate found in SAML Response.</p>
+			<p><strong>Possible Cause: '.$Cause_message.'</strong></p>
 			<p><strong>Certificate found in SAML Response: </strong><font face="Courier New";font-size:10pt><br><br>'.$pem.'</p></font>
 					</div>
-					<div style="margin:3%;display:block;text-align:center;">
-					<form action="index.php">
-					<div style="margin:3%;display:block;text-align:center;"><input style="padding:1%;width:100px;background: #0091CD none repeat scroll 0% 0%;cursor: pointer;font-size:15px;border-width: 1px;border-style: solid;border-radius: 3px;white-space: nowrap;box-sizing: border-box;border-color: #0073AA;box-shadow: 0px 1px 0px rgba(120, 200, 230, 0.6) inset;color: #FFF;"type="button" value="Done" onClick="self.close();"></div>';
-
+                    </div>';
+            mo_saml_download_logs($Error_message,$Cause_message);
 					exit;
 	}
 		else
@@ -655,7 +679,99 @@ function get_status_message($statusCode){
 			return 'Unknown';
 	}
 }
+function mo_saml_show_SAML_log($samlRequestXML,$type){
 
+	header("Content-Type: text/html");
+	$doc = new DOMDocument();
+	$doc->preserveWhiteSpace = false;
+	$doc->formatOutput = true;
+	$doc->loadXML($samlRequestXML);
+	if($type=='displaySAMLRequest')
+		$show_value='SAML Request';
+	else
+		$show_value='SAML Response';
+	$out = $doc->saveXML();
+
+	$out1 = htmlentities($out);
+    $out1 = rtrim($out1);
+
+	$xml   = simplexml_load_string( $out );
+
+	//var_dump($xml);
+	$json  = json_encode( $xml );
+	$array = json_decode( $json );
+	$url = plugins_url( 'includes/css/style_settings.css?ver=4.8.40', __FILE__ ) ;
+
+
+	echo '<link rel=\'stylesheet\' id=\'mo_saml_admin_settings_style-css\'  href=\''.$url.'\' type=\'text/css\' media=\'all\' />
+            
+			<div class="mo-display-logs" ><p type="text"   id="SAML_type">'.$show_value.'</p></div>
+			
+			<div type="text" id="SAML_display" class="mo-display-block"><pre class=\'brush: xml;\'>'.$out1.'</pre></div>
+			<br>
+			<div style="margin:3%;display:block;text-align:center;">
+            
+			<div style="margin:3%;display:block;text-align:center;" >
+	
+            </div>
+			<button id="copy" onclick="copyDivToClipboard()"  style="padding:1%;width:100px;background: #0091CD none repeat scroll 0% 0%;cursor: pointer;font-size:15px;border-width: 1px;border-style: solid;border-radius: 3px;white-space: nowrap;box-sizing: border-box;border-color: #0073AA;box-shadow: 0px 1px 0px rgba(120, 200, 230, 0.6) inset;color: #FFF;" >Copy</button>
+			&nbsp;
+               <input id="dwn-btn" style="padding:1%;width:100px;background: #0091CD none repeat scroll 0% 0%;cursor: pointer;font-size:15px;border-width: 1px;border-style: solid;border-radius: 3px;white-space: nowrap;box-sizing: border-box;border-color: #0073AA;box-shadow: 0px 1px 0px rgba(120, 200, 230, 0.6) inset;color: #FFF;"type="button" value="Download" 
+               ">
+			</div>
+			</div>
+			
+		
+			';
+
+    ob_end_flush();?>
+
+	<script>
+
+        function copyDivToClipboard() {
+            var aux = document.createElement("input");
+            aux.setAttribute("value", document.getElementById("SAML_display").textContent);
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+            document.getElementById('copy').textContent = "Copied";
+            document.getElementById('copy').style.background = "grey";
+            window.getSelection().selectAllChildren( document.getElementById( "SAML_display" ) );
+
+        }
+
+        function download(filename, text) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:Application/octet-stream;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+        document.getElementById("dwn-btn").addEventListener("click", function () {
+
+            var filename = document.getElementById("SAML_type").textContent+".xml";
+            var node = document.getElementById("SAML_display");
+            htmlContent = node.innerHTML;
+            text = node.textContent;
+            console.log(text);
+            download(filename, text);
+        }, false);
+
+
+
+
+
+    </script>
+<?php
+	exit;
+}
 function saml_get_current_page_url() {
 	$http_host = $_SERVER['HTTP_HOST'];
 	if(substr($http_host, -1) == '/') {
@@ -672,6 +788,6 @@ function saml_get_current_page_url() {
 	$relay_state = 'http' . ($is_https ? 's' : '') . '://' . $http_host . '/' . $request_uri;
 	return $relay_state;
 }
-add_action( 'widgets_init', create_function( '', 'register_widget( "mo_login_wid" );' ) );
+add_action( 'widgets_init',function(){register_widget( "mo_login_wid" );} );
 add_action( 'init', 'mo_login_validate' );
 ?>

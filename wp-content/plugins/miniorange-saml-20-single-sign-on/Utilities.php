@@ -51,6 +51,21 @@ class Utilities {
         return $urlEncoded;
     }
 
+	public static function createSAMLRequest($acsUrl, $issuer, $destination, $force_authn = 'false') {
+
+		$requestXmlStr = '<?xml version="1.0" encoding="UTF-8"?>' .
+		                 '<samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns="urn:oasis:names:tc:SAML:2.0:assertion" ID="' . self::generateID() .
+		                 '" Version="2.0" IssueInstant="' . self::generateTimestamp() . '"';
+		if( $force_authn == 'true') {
+			$requestXmlStr .= ' ForceAuthn="true"';
+		}
+		$requestXmlStr .= ' ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" AssertionConsumerServiceURL="' . $acsUrl .
+		                  '" Destination="' . htmlspecialchars($destination) . '"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">' . $issuer . '</saml:Issuer><samlp:NameIDPolicy AllowCreate="true" Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+                        /></samlp:AuthnRequest>';
+
+		return $requestXmlStr;
+	}
+
     public static function generateTimestamp($instant = NULL) {
         if($instant === NULL) {
             $instant = time();
@@ -374,17 +389,18 @@ class Utilities {
                     return TRUE;
                 } else {
                     if($relayState=='testValidate'){
-                    ob_end_clean();
-
+                    //ob_end_clean();
+					$Error_message=mo_options_error_constants::Error_invalid_audience;
+					$Cause_message = mo_options_error_constants::Cause_invalid_audience;
                     echo '<div style="font-family:Calibri;padding:0 3%;">';
                     echo '<div style="color: #a94442;background-color: #f2dede;padding: 15px;margin-bottom: 20px;text-align:center;border:1px solid #E6B3B2;font-size:18pt;"> ERROR</div>
-                    <div style="color: #a94442;font-size:14pt; margin-bottom:20px;"><p><strong>Error: </strong>Invalid Audience URI.</p>
+                    <div style="color: #a94442;font-size:14pt; margin-bottom:20px;"><p><strong>Error: </strong>'.$Error_message.'</p>
                     <p>Please contact your administrator and report the following error:</p>
-                    <p><strong>Possible Cause: </strong>The value of \'Audience URI\' field on Identity Provider\'s side is incorrect</p>
+                    <p><strong>Possible Cause: </strong>'.$Cause_message.'</p>
                     <p>Expected one of the Audiences to be: '.$spEntityId.'<p>
-                    </div>
-                    <div style="margin:3%;display:block;text-align:center;">
-                    <div style="margin:3%;display:block;text-align:center;"><input style="padding:1%;width:100px;background: #0091CD none repeat scroll 0% 0%;cursor: pointer;font-size:15px;border-width: 1px;border-style: solid;border-radius: 3px;white-space: nowrap;box-sizing: border-box;border-color: #0073AA;box-shadow: 0px 1px 0px rgba(120, 200, 230, 0.6) inset;color: #FFF;"type="button" value="Done" onClick="self.close();"></div>';   exit;
+                    </div>';
+                    mo_saml_download_logs($Error_message,$Cause_message);
+                    exit;
                 }
                 else
                 {
@@ -394,18 +410,20 @@ class Utilities {
             }
         } else {
             if($relayState=='testValidate'){
-                 ob_end_clean();
 
+	            $Error_message=mo_options_error_constants::Error_issuer_not_verfied;
+	            $Cause_message = mo_options_error_constants::Cause_issuer_not_verfied;
                 echo '<div style="font-family:Calibri;padding:0 3%;">';
                 echo '<div style="color: #a94442;background-color: #f2dede;padding: 15px;margin-bottom: 20px;text-align:center;border:1px solid #E6B3B2;font-size:18pt;"> ERROR</div>
-                <div style="color: #a94442;font-size:14pt; margin-bottom:20px;"><p><strong>Error: </strong>Issuer cannot be verified.</p>
+                <div style="color: #a94442;font-size:14pt; margin-bottom:20px;text-align: justify"><p><strong>Error:'.$Error_message.' </strong></p>
                 <p>Please contact your administrator and report the following error:</p>
-                <p><strong>Possible Cause: </strong>IdP Entity ID configured and the one found in SAML Response do not match</p>
+                <p><strong>Possible Cause:'.$Cause_message.' </strong></p>
                 <p><strong>Entity ID in SAML Response: </strong>'.$issuer.'<p>
                 <p><strong>Entity ID Configured in the plugin: </strong>'.$issuerToValidateAgainst.'</p>
                 </div>
-                <div style="margin:3%;display:block;text-align:center;">
-                <div style="margin:3%;display:block;text-align:center;"><input style="padding:1%;width:100px;background: #0091CD none repeat scroll 0% 0%;cursor: pointer;font-size:15px;border-width: 1px;border-style: solid;border-radius: 3px;white-space: nowrap;box-sizing: border-box;border-color: #0073AA;box-shadow: 0px 1px 0px rgba(120, 200, 230, 0.6) inset;color: #FFF;"type="button" value="Done" onClick="self.close();"></div>';
+                </div>';
+
+	            mo_saml_download_logs($Error_message,$Cause_message);
                  exit;
         }
          else
