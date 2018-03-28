@@ -861,7 +861,7 @@ class XMLSecurityDSig {
         $digValue = $this->calculateDigest($digestAlgorithm, $data);
         $query = 'string(./secdsig:DigestValue)';
         $digestValue = $xpath->evaluate($query, $refNode);
-        return ($digValue == $digestValue);
+        return (trim($digValue) == trim($digestValue));
     }
 
     public function processTransforms($refNode, $objData, $includeCommentNodes = TRUE) {

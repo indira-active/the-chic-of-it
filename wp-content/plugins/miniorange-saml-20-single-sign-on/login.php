@@ -3,7 +3,7 @@
 Plugin Name: miniOrange SSO using SAML 2.0
 Plugin URI: http://miniorange.com/
 Description: miniOrange SAML 2.0 SSO enables user to perform Single Sign On with any SAML 2.0 enabled Identity Provider.
-Version: 4.8.36
+Version: 4.8.40
 Author: miniOrange
 Author URI: http://miniorange.com/
 */
@@ -124,7 +124,7 @@ class saml_mo_login {
 			return;
 		}
 		wp_enqueue_style( 'mo_saml_admin_settings_jquery_style', plugins_url( 'includes/css/jquery.ui.css', __FILE__ ) );
-		wp_enqueue_style( 'mo_saml_admin_settings_style', plugins_url( 'includes/css/style_settings.css?ver=4.8', __FILE__ ) );
+		wp_enqueue_style( 'mo_saml_admin_settings_style', plugins_url( 'includes/css/style_settings.css?ver=4.8.40', __FILE__ ) );
 		wp_enqueue_style( 'mo_saml_admin_settings_phone_style', plugins_url( 'includes/css/phone.css', __FILE__ ) );
 		wp_enqueue_style( 'mo_saml_wpb-fa', plugins_url( 'includes/css/font-awesome.min.css', __FILE__ ) );
 	}
