@@ -68,7 +68,7 @@ class NextendSocialProviderTwitter extends NextendSocialProvider {
                     }
 
                     if (empty($newData[$key])) {
-                        NextendSocialLoginAdminNotices::addError(sprintf(__('The %1$s entered did not appear to be a valid. Please enter a valid %2$s.', 'nextend-facebook-connect'), $this->requiredFields[$key], $this->requiredFields[$key]));
+                        \NSL\Notices::addError(sprintf(__('The %1$s entered did not appear to be a valid. Please enter a valid %2$s.', 'nextend-facebook-connect'), $this->requiredFields[$key], $this->requiredFields[$key]));
                     }
                     break;
             }
@@ -200,6 +200,14 @@ class NextendSocialProviderTwitter extends NextendSocialProvider {
         }
 
         return parent::adminDisplaySubView($subview);
+    }
+
+    public function deleteLoginPersistentData() {
+        parent::deleteLoginPersistentData();
+
+        if ($this->client !== null) {
+            $this->client->deleteLoginPersistentData();
+        }
     }
 }
 

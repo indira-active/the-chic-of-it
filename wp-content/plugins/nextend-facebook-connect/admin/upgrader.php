@@ -45,7 +45,7 @@ class NextendSocialUpgrader {
                 if (is_array($body) && isset($body['message'])) {
                     $message = 'Nextend Social Login Pro Addon: ' . $body['message'];
 
-                    NextendSocialLoginAdminNotices::addError($message);
+                    \NSL\Notices::addError($message);
 
                     return new WP_Error('error', $message);
                 }
@@ -71,6 +71,7 @@ class NextendSocialUpgrader {
             }
 
             if (!is_wp_error($item)) {
+                $item->plugin = 'nextend-social-login-pro/nextend-social-login-pro.php';
                 if (version_compare(NextendSocialLoginPRO::$version, $item->new_version, '<')) {
                     $transient->response[$filename] = (object)$item;
                     unset($transient->no_update[$filename]);

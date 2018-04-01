@@ -16,6 +16,12 @@ class Nextend_Social_Login_Widget extends WP_Widget {
 
         $style = isset($instance['style']) ? $instance['style'] : 'default';
 
+        $loginButtons = isset($instance['login-buttons']) ? !!intval($instance['login-buttons']) : true;
+
+        $linkButtons = isset($instance['link-buttons']) ? !!intval($instance['link-buttons']) : false;
+
+        $unlinkButtons = isset($instance['unlink-buttons']) ? !!intval($instance['unlink-buttons']) : false;
+
         $isPRO = apply_filters('nsl-pro', false);
 
         ?>
@@ -40,6 +46,33 @@ class Nextend_Social_Login_Widget extends WP_Widget {
                 <br>
             </p>
         <?php endif; ?>
+
+        <p>
+            <input name="<?php echo $this->get_field_name('login-buttons'); ?>" type="hidden" value="0"/>
+            <input id="<?php echo $this->get_field_id('login-buttons'); ?>"
+                   name="<?php echo $this->get_field_name('login-buttons'); ?>" type="checkbox" value="1"
+                   <?php if ($loginButtons): ?>checked<?php endif; ?>/>
+            <label for="<?php echo $this->get_field_id('login-buttons'); ?>"><?php _e('Show login buttons', 'nextend-facebook-connect'); ?></label>
+
+        </p>
+
+        <p>
+            <input name="<?php echo $this->get_field_name('link-buttons'); ?>" type="hidden" value="0"/>
+            <input id="<?php echo $this->get_field_id('link-buttons'); ?>"
+                   name="<?php echo $this->get_field_name('link-buttons'); ?>" type="checkbox" value="1"
+                   <?php if ($linkButtons): ?>checked<?php endif; ?>/>
+            <label for="<?php echo $this->get_field_id('link-buttons'); ?>"><?php _e('Show link buttons', 'nextend-facebook-connect'); ?></label>
+
+        </p>
+
+        <p>
+            <input name="<?php echo $this->get_field_name('unlink-buttons'); ?>" type="hidden" value="0"/>
+            <input id="<?php echo $this->get_field_id('unlink-buttons'); ?>"
+                   name="<?php echo $this->get_field_name('unlink-buttons'); ?>" type="checkbox" value="1"
+                   <?php if ($unlinkButtons): ?>checked<?php endif; ?>/>
+            <label for="<?php echo $this->get_field_id('unlink-buttons'); ?>"><?php _e('Show unlink buttons', 'nextend-facebook-connect'); ?></label>
+
+        </p>
         <?php
     }
 
@@ -50,12 +83,16 @@ class Nextend_Social_Login_Widget extends WP_Widget {
 
         $style = !empty($instance['style']) ? $instance['style'] : 'default';
 
+        $loginButtons  = isset($instance['login-buttons']) ? intval($instance['login-buttons']) : 1;
+        $linkButtons   = isset($instance['link-buttons']) ? intval($instance['link-buttons']) : 0;
+        $unlinkButtons = isset($instance['unlink-buttons']) ? intval($instance['unlink-buttons']) : 0;
+
         echo $args['before_widget'];
         if ($title) {
             echo $args['before_title'] . $title . $args['after_title'];
         }
 
-        echo do_shortcode('[nextend_social_login style="' . $style . '"]');
+        echo do_shortcode('[nextend_social_login style="' . $style . '" login="' . $loginButtons . '" link="' . $linkButtons . '" unlink="' . $unlinkButtons . '"]');
 
         echo $args['after_widget'];
     }

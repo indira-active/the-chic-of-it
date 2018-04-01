@@ -15,9 +15,6 @@ class NextendSocialLoginAdmin {
         add_filter('nsl_update_settings_validate_nextend_social_login', 'NextendSocialLoginAdmin::validateSettings', 10, 2);
 
         add_action('wp_ajax_nsl_save_review_state', 'NextendSocialLoginAdmin::save_review_state');
-
-        require_once dirname(__FILE__) . '/notices.php';
-        NextendSocialLoginAdminNotices::init();
     }
 
     public static function getAdminUrl($view = 'providers') {
@@ -93,7 +90,7 @@ class NextendSocialLoginAdmin {
             include(dirname(__FILE__) . '/templates/header.php');
             include(dirname(__FILE__) . '/templates/menu.php');
 
-            NextendSocialLoginAdminNotices::displayNotices();
+            \NSL\Notices::displayNotices();
 
             /** @var string $view */
             include(dirname(__FILE__) . '/templates/' . $view . '.php');
@@ -189,6 +186,15 @@ class NextendSocialLoginAdmin {
         if (!function_exists('json_decode')) {
             add_settings_error('nextend-social', 'settings_updated', printf(__('%s needs json_decode function.', 'nextend-facebook-connect'), 'Nextend Social Login') . ' ' . __('Please contact your server administrator and ask for solution!', 'nextend-facebook-connect'), 'error');
         }
+
+        add_action('show_user_profile', array(
+            'NextendSocialLoginAdmin',
+            'showUserFields'
+        ));
+        add_action('edit_user_profile', array(
+            'NextendSocialLoginAdmin',
+            'showUserFields'
+        ));
     }
 
     public static function save_form_data() {
@@ -205,7 +211,7 @@ class NextendSocialLoginAdmin {
 
                 NextendSocialLogin::$settings->update($_POST);
 
-                NextendSocialLoginAdminNotices::addSuccess(__('Settings saved.'));
+                \NSL\Notices::addSuccess(__('Settings saved.'));
 
                 wp_redirect(self::getAdminSettingsUrl(!empty($_REQUEST['subview']) ? $_REQUEST['subview'] : ''));
                 exit;
@@ -214,7 +220,7 @@ class NextendSocialLoginAdmin {
                 NextendSocialLogin::$settings->update($_POST);
 
                 if (NextendSocialLogin::$settings->get('license_key_ok') == '1') {
-                    NextendSocialLoginAdminNotices::addSuccess(__('The authorization was successful', 'nextend-facebook-connect'));
+                    \NSL\Notices::addSuccess(__('The authorization was successful', 'nextend-facebook-connect'));
                 }
 
                 wp_redirect(self::getAdminUrl($view));
@@ -225,7 +231,7 @@ class NextendSocialLoginAdmin {
                     'license_key' => ''
                 ));
 
-                NextendSocialLoginAdminNotices::addSuccess(__('Deauthorize completed.', 'nextend-facebook-connect'));
+                \NSL\Notices::addSuccess(__('Deauthorize completed.', 'nextend-facebook-connect'));
 
                 wp_redirect(self::getAdminUrl('pro-addon'));
                 exit;
@@ -247,7 +253,7 @@ class NextendSocialLoginAdmin {
                 if (isset(NextendSocialLogin::$providers[$providerID])) {
                     NextendSocialLogin::$providers[$providerID]->settings->update($_POST);
 
-                    NextendSocialLoginAdminNotices::addSuccess(__('Settings saved.'));
+                    \NSL\Notices::addSuccess(__('Settings saved.'));
                     wp_redirect(NextendSocialLogin::$providers[$providerID]->getAdmin()
                                                                            ->getUrl(isset($_POST['subview']) ? $_POST['subview'] : ''));
                     exit;
@@ -328,7 +334,7 @@ class NextendSocialLoginAdmin {
                                     $newData['license_key_ok'] = '1';
                                 }
                             } catch (Exception $e) {
-                                NextendSocialLoginAdminNotices::addError($e->getMessage());
+                                \NSL\Notices::addError($e->getMessage());
                             }
                         }
                     }
@@ -417,7 +423,7 @@ class NextendSocialLoginAdmin {
             if (isset($response['message'])) {
                 $message = 'Nextend Social Login Pro Addon: ' . $response['message'];
 
-                NextendSocialLoginAdminNotices::addError($message);
+                \NSL\Notices::addError($message);
 
                 return new WP_Error('error', $message);
             }
@@ -498,5 +504,9 @@ class NextendSocialLoginAdmin {
 
     public static function isPro() {
         return apply_filters('nsl-pro', false);
+    }
+
+    public static function showUserFields($user) {
+        include(dirname(__FILE__) . '/EditUser.php');
     }
 }
