@@ -43,6 +43,8 @@ class NextendSocialProviderAdmin {
 
     public function validateSettings($newData, $postedData) {
 
+        $newData = $this->provider->validateSettings($newData, $postedData);
+
         if (isset($postedData['custom_default_button'])) {
             if (isset($postedData['custom_default_button_enabled']) && $postedData['custom_default_button_enabled'] == '1') {
                 $newData['custom_default_button'] = $postedData['custom_default_button'];
@@ -101,6 +103,15 @@ class NextendSocialProviderAdmin {
                 case 'buttons':
                     $this->render('buttons');
                     break;
+                case 'sync-data':
+                    if ($this->provider->hasSyncFields()) {
+                        $this->render('sync-data');
+                    } else {
+                        wp_redirect($this->provider->getAdmin()
+                                                   ->getUrl());
+                        exit;
+                    }
+                    break;
                 case 'usage':
                     $this->render('usage');
                     break;
@@ -123,12 +134,14 @@ class NextendSocialProviderAdmin {
             include(self::$globalPath . '/templates-provider/menu.php');
         }
 
-        NextendSocialLoginAdminNotices::displayNotices();
+        \NSL\Notices::displayNotices();
 
         if ($view == 'buttons') {
             include(self::$globalPath . '/templates-provider/buttons.php');
         } else if ($view == 'usage') {
             include(self::$globalPath . '/templates-provider/usage.php');
+        } else if ($view == 'sync-data') {
+            include(self::$globalPath . '/templates-provider/sync-data.php');
         } else {
             include($this->path . '/' . $view . '.php');
         }

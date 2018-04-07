@@ -9,6 +9,8 @@ class NextendSocialUser {
 
     protected $access_token;
 
+    private $userExtraData;
+
     /**
      * NextendSocialUser constructor.
      *
@@ -49,15 +51,15 @@ class NextendSocialUser {
 
                     $this->provider->syncProfile($current_user->ID, $this->provider, $this->access_token);
 
-                    NextendSocialLoginAdminNotices::addSuccess(sprintf(__('Your %1$s account is successfully linked with your account. Now you can sign in with %2$s easily.', 'nextend-facebook-connect'), $this->provider->getLabel(), $this->provider->getLabel()));
+                    \NSL\Notices::addSuccess(sprintf(__('Your %1$s account is successfully linked with your account. Now you can sign in with %2$s easily.', 'nextend-facebook-connect'), $this->provider->getLabel(), $this->provider->getLabel()));
                 } else {
 
-                    NextendSocialLoginAdminNotices::addError(sprintf(__('You have already linked a(n) %s account. Please unlink the current and then you can link other %s account.', 'nextend-facebook-connect'), $this->provider->getLabel(), $this->provider->getLabel()));
+                    \NSL\Notices::addError(sprintf(__('You have already linked a(n) %s account. Please unlink the current and then you can link other %s account.', 'nextend-facebook-connect'), $this->provider->getLabel(), $this->provider->getLabel()));
                 }
 
             } else if ($current_user->ID != $user_id) {
 
-                NextendSocialLoginAdminNotices::addError(sprintf(__('This %s account is already linked to other user.', 'nextend-facebook-connect'), $this->provider->getLabel()));
+                \NSL\Notices::addError(sprintf(__('This %s account is already linked to other user.', 'nextend-facebook-connect'), $this->provider->getLabel()));
             }
         }
     }
@@ -117,6 +119,7 @@ class NextendSocialUser {
             'username' => $sanitized_user_login
         );
 
+        do_action('nsl_before_register', $this->provider);
         $userData = apply_filters('nsl_' . $this->provider->getId() . '_register_user_data', $userData);
 
         if (empty($userData['email'])) {
@@ -135,6 +138,8 @@ class NextendSocialUser {
             $this,
             'registerComplete'
         ), 11);
+
+        $this->userExtraData = $userData;
 
         $ret = wp_create_user($userData['username'], $user_pass, $userData['email']);
         if (is_wp_error($ret) || $ret === 0) {
@@ -183,6 +188,8 @@ class NextendSocialUser {
         update_user_option($user_id, 'default_password_nag', true, true);
 
         $this->provider->linkUserToProviderIdentifier($user_id, $this->getAuthUserData('id'));
+
+        do_action('nsl_registration_store_extra_input', $user_id, $this->userExtraData);
 
         do_action('nsl_register_new_user', $user_id, $this->provider);
         do_action('nsl_' . $this->provider->getId() . '_register_new_user', $user_id, $this->provider);

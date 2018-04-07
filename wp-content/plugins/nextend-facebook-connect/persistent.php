@@ -20,16 +20,24 @@ class NextendSocialLoginPersistentAnonymous {
         self::$sessionName = apply_filters('nsl_session_name', self::$sessionName);
     }
 
-    private static function getSessionID($mustCreate = false) {
+    public static function hasSession() {
         if (self::$verifiedSession !== false) {
-            return self::$verifiedSession;
+            return true;
         }
         if (isset($_COOKIE[self::$sessionName])) {
             if (get_site_transient('n_' . $_COOKIE[self::$sessionName]) !== false) {
                 self::$verifiedSession = $_COOKIE[self::$sessionName];
 
-                return self::$verifiedSession;
+                return true;
             }
+        }
+
+        return false;
+    }
+
+    private static function getSessionID($mustCreate = false) {
+        if (self::hasSession()) {
+            return self::$verifiedSession;
         }
         if ($mustCreate) {
             self::$verifiedSession = uniqid('nsl', true);

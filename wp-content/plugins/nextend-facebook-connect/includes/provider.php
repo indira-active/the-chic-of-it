@@ -20,6 +20,8 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
 
     protected $svg = '';
 
+    protected $sync_fields = array();
+
     public function __construct($defaultSettings) {
 
         if (empty($this->dbID)) {
@@ -27,6 +29,26 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
         }
 
         $this->optionKey = 'nsl_' . $this->id;
+
+        do_action('nsl_provider_init', $this);
+
+        $this->sync_fields = apply_filters('nsl_' . $this->getId() . '_sync_fields', $this->sync_fields);
+
+        $extraSettings = apply_filters('nsl_' . $this->getId() . '_extra_settings', array(
+            'ask_email'      => 'when-empty',
+            'ask_user'       => 'never',
+            'auto_link'      => 'email',
+            'disabled_roles' => array(),
+            'register_roles' => array(
+                'default'
+            )
+        ));
+
+        foreach ($this->getSyncFields() AS $field_name => $fieldData) {
+
+            $extraSettings['sync_fields/fields/' . $field_name . '/enabled']  = 0;
+            $extraSettings['sync_fields/fields/' . $field_name . '/meta_key'] = $field_name;
+        }
 
         $this->settings = new NextendSocialLoginSettings($this->optionKey, array_merge(array(
             'settings_saved'        => '0',
@@ -39,15 +61,10 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
             'user_prefix'           => '',
             'user_fallback'         => '',
             'oauth_redirect_url'    => '',
-        ), array(
-            'ask_email'      => 'when-empty',
-            'ask_user'       => 'never',
-            'auto_link'      => 'email',
-            'disabled_roles' => array(),
-            'register_roles' => array(
-                'default'
-            )
-        ), $defaultSettings));
+
+            'sync_fields/link'  => 0,
+            'sync_fields/login' => 0
+        ), $extraSettings, $defaultSettings));
 
         $this->admin = new NextendSocialProviderAdmin($this);
 
@@ -99,6 +116,8 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
 
     public function enable() {
         $this->enabled = true;
+
+        do_action('nsl_' . $this->getId() . '_enabled');
 
         return true;
     }
@@ -197,12 +216,12 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
 
             $interim_login = isset($_REQUEST['interim-login']);
             if ($interim_login) {
-                NextendSocialLoginPersistentAnonymous::set($this->id . '_interim_login', 1);
+                \NSL\Persistent\Persistent::set($this->id . '_interim_login', 1);
             }
 
             $display = isset($_REQUEST['display']);
             if ($display && $_REQUEST['display'] == 'popup') {
-                NextendSocialLoginPersistentAnonymous::set($this->id . '_display', 'popup');
+                \NSL\Persistent\Persistent::set($this->id . '_display', 'popup');
             }
 
         } else {
@@ -240,8 +259,8 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
             } else {
                 $client->setAccessTokenData($accessTokenData);
             }
-            if (NextendSocialLoginPersistentAnonymous::get($this->id . '_display') == 'popup') {
-                NextendSocialLoginPersistentAnonymous::delete($this->id . '_display');
+            if (\NSL\Persistent\Persistent::get($this->id . '_display') == 'popup') {
+                \NSL\Persistent\Persistent::delete($this->id . '_display');
                 ?>
                 <!doctype html>
                 <html lang=en>
@@ -377,6 +396,21 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
         return $ID;
     }
 
+    public function isUserConnected($user_id) {
+        /** @var $wpdb WPDB */
+        global $wpdb;
+
+        $ID = $wpdb->get_var($wpdb->prepare('SELECT identifier FROM `' . $wpdb->prefix . 'social_users` WHERE type LIKE %s AND ID = %d', array(
+            $this->dbID,
+            $user_id
+        )));
+        if ($ID === null) {
+            return false;
+        }
+
+        return $ID;
+    }
+
     public function getConnectButton($buttonStyle = 'default', $redirectTo = null, $trackerData = false) {
         $arg = array();
         if (!empty($redirectTo)) {
@@ -443,7 +477,7 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
 
             if (isset($_GET['action']) && $_GET['action'] == 'unlink') {
                 if ($this->unlinkUser()) {
-                    NextendSocialLoginAdminNotices::addSuccess(__('Unlink successful.', 'nextend-facebook-connect'));
+                    \NSL\Notices::addSuccess(__('Unlink successful.', 'nextend-facebook-connect'));
                 }
             }
 
@@ -452,10 +486,10 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
         }
 
         if (isset($_GET['action']) && $_GET['action'] == 'link') {
-            NextendSocialLoginPersistentAnonymous::set($this->id . '_action', 'link');
+            \NSL\Persistent\Persistent::set($this->id . '_action', 'link');
         }
 
-        if (is_user_logged_in() && NextendSocialLoginPersistentAnonymous::get($this->id . '_action') != 'link') {
+        if (is_user_logged_in() && \NSL\Persistent\Persistent::get($this->id . '_action') != 'link') {
             $this->deleteLoginPersistentData();
 
             $this->redirectToLastLocationOther();
@@ -466,7 +500,7 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
     public function liveConnectRedirect() {
         if (!empty($_GET['trackerdata']) && !empty($_GET['trackerdata_hash'])) {
             if (wp_hash($_GET['trackerdata']) === $_GET['trackerdata_hash']) {
-                NextendSocialLoginPersistentAnonymous::set('trackerdata', $_GET['trackerdata']);
+                \NSL\Persistent\Persistent::set('trackerdata', $_GET['trackerdata']);
             }
         }
 
@@ -478,16 +512,16 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
         }
 
         if (isset($_GET['redirect'])) {
-            NextendSocialLoginPersistentAnonymous::set('_redirect', $_GET['redirect']);
+            \NSL\Persistent\Persistent::set('redirect', $_GET['redirect']);
             $redirect = $_GET['redirect'];
         } else {
-            $redirect = NextendSocialLoginPersistentAnonymous::get('_redirect');
+            $redirect = \NSL\Persistent\Persistent::get('redirect');
         }
 
         $redirect = apply_filters($this->id . '_login_redirect_url', $redirect, $this);
 
         if ($redirect == '' || $redirect == $this->getLoginUrl()) {
-            NextendSocialLoginPersistentAnonymous::set('_redirect', site_url());
+            \NSL\Persistent\Persistent::set('redirect', site_url());
         }
     }
 
@@ -497,13 +531,13 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
         $redirect = apply_filters($this->id . '_register_redirect_url', $redirect, $this);
 
         if (!empty($redirect)) {
-            NextendSocialLoginPersistentAnonymous::set('_redirect', $redirect);
+            \NSL\Persistent\Persistent::set('redirect', $redirect);
         }
     }
 
     public function redirectToLastLocation() {
 
-        if (NextendSocialLoginPersistentAnonymous::get($this->id . '_interim_login') == 1) {
+        if (\NSL\Persistent\Persistent::get($this->id . '_interim_login') == 1) {
             $this->deleteLoginPersistentData();
 
             $url = add_query_arg('interim_login', 'nsl', site_url('wp-login.php', 'login'));
@@ -537,7 +571,7 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
     }
 
     protected function getLastLocationRedirectTo() {
-        $requested_redirect_to = NextendSocialLoginPersistentAnonymous::get('_redirect');
+        $requested_redirect_to = \NSL\Persistent\Persistent::get('redirect');
 
         if (empty($requested_redirect_to) || !NextendSocialLogin::isAllowedRedirectUrl($requested_redirect_to)) {
             if (!empty($_GET['redirect']) && NextendSocialLogin::isAllowedRedirectUrl($_GET['redirect'])) {
@@ -555,7 +589,7 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
         $redirect_to = wp_sanitize_redirect($redirect_to);
         $redirect_to = wp_validate_redirect($redirect_to, site_url());
 
-        NextendSocialLoginPersistentAnonymous::delete('_redirect');
+        \NSL\Persistent\Persistent::delete('redirect');
 
         $redirect_to = $this->validateRedirect($redirect_to);
 
@@ -573,10 +607,10 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
     public function isTest() {
         if (is_user_logged_in() && current_user_can('manage_options')) {
             if (isset($_REQUEST['test'])) {
-                NextendSocialLoginPersistentUser::set('_test', 1);
+                \NSL\Persistent\Persistent::set('test', 1);
 
                 return true;
-            } else if (NextendSocialLoginPersistentUser::get('_test') == 1) {
+            } else if (\NSL\Persistent\Persistent::get('test') == 1) {
                 return true;
             }
         }
@@ -593,7 +627,7 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
             'oauth_redirect_url' => $this->getLoginUrl()
         ));
 
-        NextendSocialLoginAdminNotices::addSuccess(__('The test was successful', 'nextend-facebook-connect'));
+        \NSL\Notices::addSuccess(__('The test was successful', 'nextend-facebook-connect'));
 
         ?>
         <!doctype html>
@@ -612,21 +646,19 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
     }
 
     protected function setAnonymousAccessToken($accessToken) {
-        NextendSocialLoginPersistentAnonymous::set($this->id . '_at', $accessToken);
+        \NSL\Persistent\Persistent::set($this->id . '_at', $accessToken);
     }
 
     protected function getAnonymousAccessToken() {
-        return NextendSocialLoginPersistentAnonymous::get($this->id . '_at');
+        return \NSL\Persistent\Persistent::get($this->id . '_at');
     }
 
     public function deleteLoginPersistentData() {
-        NextendSocialLoginPersistentAnonymous::delete($this->id . '_at');
-        NextendSocialLoginPersistentAnonymous::delete($this->id . '_interim_login');
-        NextendSocialLoginPersistentAnonymous::delete($this->id . '_display');
-        NextendSocialLoginPersistentAnonymous::delete($this->id . '_action');
-        NextendSocialLoginPersistentUser::delete('_test');
-
-        NextendSocialLogin::clearPersistentAnonymousStorage();
+        \NSL\Persistent\Persistent::delete($this->id . '_at');
+        \NSL\Persistent\Persistent::delete($this->id . '_interim_login');
+        \NSL\Persistent\Persistent::delete($this->id . '_display');
+        \NSL\Persistent\Persistent::delete($this->id . '_action');
+        \NSL\Persistent\Persistent::delete('test');
     }
 
     /**
@@ -730,5 +762,18 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
         </html>
         <?php
         exit;
+    }
+
+    public function getSyncFields() {
+        return $this->sync_fields;
+    }
+
+    public function hasSyncFields() {
+        return !empty($this->sync_fields);
+    }
+
+    public function validateSettings($newData, $postedData) {
+
+        return $newData;
     }
 }

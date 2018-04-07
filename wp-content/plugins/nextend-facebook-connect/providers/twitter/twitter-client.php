@@ -29,6 +29,11 @@ class NextendSocialProviderTwitterClient extends NextendSocialAuth {
         $this->redirect_uri = $redirect_uri;
     }
 
+
+    public function deleteLoginPersistentData() {
+        \NSL\Persistent\Persistent::delete($this->providerID . '_request_token');
+    }
+
     /**
      * @return string
      * @throws Exception
@@ -41,7 +46,7 @@ class NextendSocialProviderTwitterClient extends NextendSocialAuth {
 
         $oauthTokenData = $this->extract_params($response);
 
-        NextendSocialLoginPersistentAnonymous::set($this->providerID . '_request_token', maybe_serialize($oauthTokenData));
+        \NSL\Persistent\Persistent::set($this->providerID . '_request_token', maybe_serialize($oauthTokenData));
 
         return $this->endpoint . 'oauth/authenticate?oauth_token=' . $oauthTokenData['oauth_token'] /*. '&force_login=1'*/
             ;
@@ -65,7 +70,7 @@ class NextendSocialProviderTwitterClient extends NextendSocialAuth {
      * @throws Exception
      */
     public function authenticate() {
-        $requestToken = maybe_unserialize(NextendSocialLoginPersistentAnonymous::get($this->providerID . '_request_token'));
+        $requestToken = maybe_unserialize(\NSL\Persistent\Persistent::get($this->providerID . '_request_token'));
 
         $response = $this->oauthRequest($this->endpoint . 'oauth/access_token', 'POST', array(), array(
             'oauth_verifier' => $_GET['oauth_verifier']

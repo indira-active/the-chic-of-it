@@ -21,6 +21,7 @@
 
 .nsl-container-inline > a {
     margin: 5px;
+    display: inline-block;
 }
 
 .nsl-container .nsl-button {

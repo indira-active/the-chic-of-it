@@ -72,7 +72,7 @@ abstract class NextendSocialOauth2 extends NextendSocialAuth {
     }
 
     protected function formatScopes($scopes) {
-        return implode(' ', $scopes);
+        return implode(' ', array_unique($scopes));
     }
 
     /**
@@ -134,8 +134,12 @@ abstract class NextendSocialOauth2 extends NextendSocialAuth {
         }
     }
 
+    public function deleteLoginPersistentData() {
+        \NSL\Persistent\Persistent::delete($this->providerID . '_state');
+    }
+
     protected function validateState() {
-        $this->state = NextendSocialLoginPersistentAnonymous::get($this->providerID . '_state');
+        $this->state = \NSL\Persistent\Persistent::get($this->providerID . '_state');
         if ($this->state === false) {
             return false;
         }
@@ -152,11 +156,11 @@ abstract class NextendSocialOauth2 extends NextendSocialAuth {
     }
 
     protected function getState() {
-        $this->state = NextendSocialLoginPersistentAnonymous::get($this->providerID . '_state');
-        if ($this->state === false) {
+        $this->state = \NSL\Persistent\Persistent::get($this->providerID . '_state');
+        if ($this->state === null) {
             $this->state = $this->generateRandomState();
 
-            NextendSocialLoginPersistentAnonymous::set($this->providerID . '_state', $this->state);
+            \NSL\Persistent\Persistent::set($this->providerID . '_state', $this->state);
         }
 
         return $this->state;

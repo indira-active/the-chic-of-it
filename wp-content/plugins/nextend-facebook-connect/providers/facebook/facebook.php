@@ -15,6 +15,57 @@ class NextendSocialProviderFacebook extends NextendSocialProvider {
 
     protected $popupHeight = 175;
 
+    protected $sync_fields = array(
+        'age_range'           => array(
+            'label' => 'Age range',
+            'node'  => 'me'
+        ),
+        'birthday'            => array(
+            'label' => 'Birthday',
+            'node'  => 'me',
+            'scope' => 'user_birthday'
+        ),
+        'link'                => array(
+            'label' => 'Profile link',
+            'node'  => 'me',
+        ),
+        'locale'              => array(
+            'label' => 'Locale',
+            'node'  => 'me'
+        ),
+        'timezone'            => array(
+            'label' => 'Timezone',
+            'node'  => 'me',
+        ),
+        'currency'            => array(
+            'label' => 'Currency',
+            'node'  => 'me',
+        ),
+        'hometown'            => array(
+            'label' => 'Hometown',
+            'node'  => 'me',
+            'scope' => 'user_hometown'
+        ),
+        'location'            => array(
+            'label' => 'Location',
+            'node'  => 'me',
+            'scope' => 'user_location'
+        ),
+        'gender'              => array(
+            'label' => 'Gender',
+            'node'  => 'me',
+        ),
+        'relationship_status' => array(
+            'label' => 'Relationship status',
+            'node'  => 'me',
+        ),
+        'website'             => array(
+            'label' => 'Website',
+            'node'  => 'me',
+            'scope' => 'user_website'
+        )
+    );
+
     public function __construct() {
         $this->id    = 'facebook';
         $this->label = 'Facebook';
@@ -106,7 +157,7 @@ class NextendSocialProviderFacebook extends NextendSocialProvider {
                     }
 
                     if (empty($newData[$key])) {
-                        NextendSocialLoginAdminNotices::addError(sprintf(__('The %1$s entered did not appear to be a valid. Please enter a valid %2$s.', 'nextend-facebook-connect'), $this->requiredFields[$key], $this->requiredFields[$key]));
+                        \NSL\Notices::addError(sprintf(__('The %1$s entered did not appear to be a valid. Please enter a valid %2$s.', 'nextend-facebook-connect'), $this->requiredFields[$key], $this->requiredFields[$key]));
                     }
                     break;
             }
@@ -136,8 +187,21 @@ class NextendSocialProviderFacebook extends NextendSocialProvider {
      */
     protected function getCurrentUserInfo() {
 
+        $fields       = array(
+            'id',
+            'name',
+            'email',
+            'first_name',
+            'last_name'
+        );
+        $extra_fields = apply_filters('nsl_facebook_me_fields', array());
+
         return $this->getClient()
-                    ->get('/me?fields=id,name,email,first_name,last_name');
+                    ->get('/me?fields=' . implode(',', array_merge($fields, $extra_fields)));
+    }
+
+    public function getMe() {
+        return $this->authUserData;
     }
 
     public function getAuthUserData($key) {
@@ -256,6 +320,14 @@ class NextendSocialProviderFacebook extends NextendSocialProvider {
         }
 
         return parent::adminDisplaySubView($subview);
+    }
+
+    public function deleteLoginPersistentData() {
+        parent::deleteLoginPersistentData();
+
+        if ($this->client !== null) {
+            $this->client->deleteLoginPersistentData();
+        }
     }
 }
 
