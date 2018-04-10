@@ -2255,7 +2255,7 @@ function mo_saml_show_pricing_page() { ?>
                 <td><b>Add-Ons</b></td>
                 <td>Purchase Separately</td>
                 <td>Purchase Separately</td>
-                <td>Purchase Separately</td>
+                <td>Included</td>
             </tr>
             <tr>
                 <td>Buddypress Attribute Mapping Add-On</td>

@@ -4,7 +4,7 @@ Donate link: http://miniorange.com
 Tags: single sign on,sso,saml, SSO Saml, login, sso integration WordPress, SSO using SAML, SAML 2.0 Service Provider, Wordpress SAML, SAML Single Sign-On, SSO using SAML, SAML 2.0, SAML 20, Wordpress Single Sign On,ad,ADFS,Active directory,Azure AD,adfs single sign-on, ad sso,Okta, Google Apps, Google for Work, Salesforce, Shibboleth, SimpleSAMLphp, OpenAM, Centrify, Ping, RSA, IBM, Oracle, OneLogin, Bitium, WSO2, NetIQ, Novell Access Manager, login with adfs, login with azure ad, login with okta, auth0, AuthAnvil, cognito, Atlassian, CA Identity Manager, Tivoli Identity Manage, Forgerock OpenIDM, SAP Cloud Identity Provider
 Requires at least: 3.5
 Tested up to: 4.9.4
-Stable tag: 4.8.40
+Stable tag: 4.8.41
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,9 @@ Visit Help & FAQ section in the plugin OR email us at info@miniorange.com or <a 
 3. Configure your IdP in your Wordpress site.
 
 == Changelog ==
+
+= 4.8.41 =
+* Support for PHP version 5.3 and above.
 
 = 4.8.40 =
 * Added feature for Exporting plugin configuration.
@@ -206,6 +209,9 @@ UI Improvements.
 * this is the first release.
 
 == Upgrade Notice ==
+
+= 4.8.41 =
+* Support for PHP version 5.3 and above.
 
 = 4.8.40 =
 * Added feature for Exporting plugin configuration.
