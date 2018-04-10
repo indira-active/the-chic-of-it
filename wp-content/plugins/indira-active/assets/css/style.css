@@ -195,11 +195,25 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
         width: 100%; }
       .site-header .search-form {
         margin-top: 0;
-        width: 60%; } }
+        max-width: 400px; } }
 
 .title-area {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
   padding: 10px 0;
   width: 300px; }
+  @media only screen and (max-width: 1200px) {
+    .title-area {
+      position: relative;
+      left: auto;
+      -webkit-transform: none;
+      transform: none; } }
+  @media only screen and (max-width: 960px) {
+    .title-area {
+      margin: 5px auto;
+      float: none; } }
 
 .site-title {
   font-size: 21px;
